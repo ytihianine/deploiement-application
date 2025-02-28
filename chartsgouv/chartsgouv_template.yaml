@@ -1,0 +1,97 @@
+onyxia:
+  friendlyName: superset
+  owner: custom
+  share: true
+  userDefinedValues: ""
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - custom-host.lab.incubateur.finances.rie.gouv.fr
+
+image:
+  repository: ghcr.io/ytihianine/chartsgouv
+  tag: 4.1.1-1.13.0
+  pullPolicy: IfNotPresent
+
+# Nécessaire d'installer les packages des connectors manuellement depuis la 4.1
+bootstrapScript: |
+  #!/bin/bash
+  # Update system packages and install dependencies
+  apt update
+
+  CONFIG_PIP = True
+
+  # Check if CONFIG_PIP is enabled
+  if [ "$CONFIG_PIP" = true ]; then
+    echo "Configuring Pip..."
+    # Define the custom PyPI index URL and trusted host
+    PIP_INDEX_URL="TO DEFINE"
+    PIP_TRUSTED_HOST="TO DEFINE"
+
+    # Ensure the .pip directory exists
+    mkdir -p ~/.pip
+
+    # Create or update the pip configuration file
+    cat > ~/.pip/pip.conf <<EOL
+    [global]
+    index-url = $PIP_INDEX_URL
+    trusted-host = $PIP_TRUSTED_HOST
+    EOL
+
+    echo "Pip configuration updated successfully!"
+  else
+      echo "Skipping Pip configuration."
+  fi
+  
+  # Install Python dependencies
+  pip install psycopg2-binary==2.9.10
+  pip install openpyxl==3.1.5
+  pip install duckdb==1.2.0
+
+  # Create a bootstrap log file if not already created
+  if [ ! -f ~/bootstrap ]; then 
+    echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap
+  fi
+
+init:
+  adminUser:
+    # Override
+    username: admin
+    password: admin
+configOverrides: 
+   secret: |
+      # Generate your own secret key for encryption. Use `openssl rand -base64 42` to generate a good key
+      # PLEASE OVERRIDE
+      SECRET_KEY = 'custom value'
+supersetNode:
+  replicas:
+    enabled: true
+    replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  connections:
+    db_host: 'custom'
+    db_port: '5432'
+    db_user: custom
+    db_pass: custom
+    db_name: custom
+postgresql:
+  enabled: false
+# Superset Celery worker configuration
+supersetWorker:
+  replicas:
+    enabled: true
+    replicaCount: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  # -- Sets the [pod disruption budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) for supersetWorker pods
