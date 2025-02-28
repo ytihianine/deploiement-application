@@ -1,0 +1,85 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+## @section Global parameters
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
+
+## @param global.imageRegistry Global Docker image registry
+## @param global.imagePullSecrets Global Docker registry secret names as an array
+## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
+## @param global.storageClass DEPRECATED: use global.defaultStorageClass instead
+## @param global.redis.password Global Redis&reg; password (overrides `auth.password`)
+##
+global:
+  redis:
+    password: ""
+
+## Bitnami Redis&reg; image
+## ref: https://hub.docker.com/r/bitnami/redis/tags/
+## @param image.registry [default: REGISTRY_NAME] Redis&reg; image registry
+## @param image.repository [default: REPOSITORY_NAME/redis] Redis&reg; image repository
+## @skip image.tag Redis&reg; image tag (immutable tags are recommended)
+## @param image.digest Redis&reg; image digest in the way sha256:aa.... Please note this parameter, if set, will override the tag
+## @param image.pullPolicy Redis&reg; image pull policy
+## @param image.pullSecrets Redis&reg; image pull secrets
+## @param image.debug Enable image debug mode
+##
+image:
+  registry: docker.io
+  repository: bitnami/redis
+  tag: 7.4.2-debian-12-r4
+  digest: ""
+  ## Specify a imagePullPolicy
+  ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ## e.g:
+  ## pullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  pullSecrets: []
+  ## Enable debug mode
+  ##
+  debug: false
+## @param commonConfiguration [string] Common configuration to be added into the ConfigMap
+## ref: https://redis.io/topics/config
+##
+commonConfiguration: |-
+  # Enable AOF https://redis.io/topics/persistence#append-only-file
+  appendonly yes
+  # Disable RDB persistence, AOF persistence already enabled.
+  save ""
+
+master:
+  ## @param master.count Number of Redis&reg; master instances to deploy (experimental, requires additional configuration)
+  ##
+  count: 1
+  ## @param master.revisionHistoryLimit The number of old history to retain to allow rollback
+  ## NOTE: Explicitly setting this field to 0, will result in cleaning up all the history, breaking ability to rollback
+  revisionHistoryLimit: 10
+  ## @param master.configuration Configuration for Redis&reg; master nodes
+  ## ref: https://redis.io/topics/config
+  ##
+  configuration: ""
+  ## @param master.disableCommands Array with Redis&reg; commands to disable on master nodes
+  ## Commands will be completely disabled by renaming each to an empty string.
+  ## ref: https://redis.io/topics/security#disabling-of-specific-commands
+  ##
+  disableCommands:
+    - FLUSHDB
+    - FLUSHALL
+  containerPorts:
+    redis: 6379
+  persistence:
+    ## @param master.persistence.enabled Enable persistence on Redis&reg; master nodes using Persistent Volume Claims
+    ##
+    enabled: true
+    ## @param master.persistence.size Persistent Volume size
+    ##
+    size: 20Gi
