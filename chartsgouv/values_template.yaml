@@ -11,9 +11,25 @@ ingress:
     - custom-host.lab.incubateur.finances.rie.gouv.fr
 
 image:
-  repository: ghcr.io/ytihianine/chartsgouv
-  tag: 4.1.1-1.13.0
+  repository: ghcr.io/etalab-ia/chartsgouv
+  tag: 4.1.2-1.13.1-2.0.3
   pullPolicy: IfNotPresent
+
+extraVolumes:
+  - name: superset-tmp-custom-extra-config
+    configMap:
+      name: superset-tmp-custom-extra-config
+#  - name: client-secret
+#    secret:
+#      secretName: client-secret
+
+extraVolumeMounts:
+  - name: superset-tmp-custom-extra-config
+    mountPath: /app/pythonpath/custom_config
+#  - name: client-secret
+#    mountPath: /app/client_secret.json
+#    subPath: client_secret.json
+#    readOnly: true
 
 # Nécessaire d'installer les packages des connectors manuellement depuis la 4.1
 bootstrapScript: |
@@ -21,24 +37,24 @@ bootstrapScript: |
   # Update system packages and install dependencies
   apt update
 
-  CONFIG_PIP = True
+  CONFIG_PIP=true
 
   # Check if CONFIG_PIP is enabled
   if [ "$CONFIG_PIP" = true ]; then
     echo "Configuring Pip..."
     # Define the custom PyPI index URL and trusted host
-    PIP_INDEX_URL="TO DEFINE"
-    PIP_TRUSTED_HOST="TO DEFINE"
+    PIP_INDEX_URL="https://bercyhub:bercyhub@nexus.pic.dgfip.finances.rie.gouv.fr/repository/pypi/simple/"
+    PIP_TRUSTED_HOST="nexus.pic.dgfip.finances.rie.gouv.fr"
 
     # Ensure the .pip directory exists
     mkdir -p ~/.pip
 
     # Create or update the pip configuration file
     cat > ~/.pip/pip.conf <<EOL
-    [global]
-    index-url = $PIP_INDEX_URL
-    trusted-host = $PIP_TRUSTED_HOST
-    EOL
+  [global]
+  index-url = $PIP_INDEX_URL
+  trusted-host = $PIP_TRUSTED_HOST
+  EOL
 
     echo "Pip configuration updated successfully!"
   else
@@ -60,11 +76,9 @@ init:
     # Override
     username: admin
     password: admin
-configOverrides: 
-   secret: |
-      # Generate your own secret key for encryption. Use `openssl rand -base64 42` to generate a good key
-      # PLEASE OVERRIDE
-      SECRET_KEY = 'custom value'
+extraSecretEnv:
+  MAPBOX_API_KEY: 'Your token'
+  SUPERSET_SECRET_KEY: 'Your secret key'
 supersetNode:
   replicas:
     enabled: true
@@ -75,14 +89,8 @@ supersetNode:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
-  connections:
-    db_host: 'custom'
-    db_port: '5432'
-    db_user: custom
-    db_pass: custom
-    db_name: custom
 postgresql:
-  enabled: false
+  enabled: true
 # Superset Celery worker configuration
 supersetWorker:
   replicas:
