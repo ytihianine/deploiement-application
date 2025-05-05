@@ -7,7 +7,7 @@ airflow:
   legacyCommands: false
 
   image:
-    tag: 2.10.5-python3.10
+    tag: 2.10.5-python3.12
 
   ## a list of users to create
   ## - templates can ONLY be used in: `password`, `email`, `firstName`, `lastName`
