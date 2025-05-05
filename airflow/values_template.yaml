@@ -82,7 +82,7 @@ workers:
       memory: "4Gi"
 
   podDisruptionBudget:
-    enabled: true
+    enabled: false
     ## prevents losing more than 20% of current worker task slots in a voluntary disruption
     maxUnavailable: "20%"
 
