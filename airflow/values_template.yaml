@@ -9,6 +9,9 @@ airflow:
   image:
     tag: 2.10.5-python3.12
 
+  ## if we create a Deployment to perpetually sync `airflow.users`
+  usersUpdate: false
+
   ## a list of users to create
   ## - templates can ONLY be used in: `password`, `email`, `firstName`, `lastName`
   ## - templates used a bash-like syntax: ${MY_USERNAME}, $MY_USERNAME
