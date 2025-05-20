@@ -10,5 +10,5 @@ kubectl create configmap superset-tmp-custom-extra-config \
 
 helm repo add superset http://apache.github.io/superset/
 helm repo update superset
-helm upgrade --install your-instance-name superset/superset -f values.yaml \
+helm upgrade --install chartsgouv-mef-sg superset/superset -f values.yaml \
     --set-file=configOverrides.config_override=superset_config_override.py
