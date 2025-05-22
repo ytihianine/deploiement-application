@@ -89,8 +89,16 @@ supersetNode:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
+  connections:
+    # You need to change below configuration incase bringing own PostgresSQL instance and also set postgresql.enabled:false
+    db_host: "{{ .Release.Name }}-postgresql"
+    db_port: "5432"
+    db_user: superset
+    db_pass: superset
+    db_name: superset
+## Set to false if bringing your own PostgreSQL.
 postgresql:
-  enabled: true
+  enabled: false
 # Superset Celery worker configuration
 supersetWorker:
   replicas:
