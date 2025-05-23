@@ -1,3 +1,5 @@
+SECRET_KEY = 'FeatureFlagCustomSecretKey'
+
 FEATURE_FLAGS: dict[str, bool] = {
     # When using a recent version of Druid that supports JOINs turn this on
     "DRUID_JOINS": False,
