@@ -1,5 +1,3 @@
-SECRET_KEY = 'FeatureFlagCustomSecretKey'
-
 FEATURE_FLAGS: dict[str, bool] = {
     # When using a recent version of Druid that supports JOINs turn this on
     "DRUID_JOINS": False,
@@ -37,7 +35,7 @@ FEATURE_FLAGS: dict[str, bool] = {
     "ALERT_REPORTS": False,
     "ALERT_REPORT_TABS": False,
     "ALERT_REPORT_SLACK_V2": False,
-    "DASHBOARD_RBAC": False,
+    "DASHBOARD_RBAC": True,
     "ENABLE_ADVANCED_DATA_TYPES": False,
     # Enabling ALERTS_ATTACH_REPORTS, the system sends email and slack message
     # with screenshot and link
@@ -48,7 +46,7 @@ FEATURE_FLAGS: dict[str, bool] = {
     "ALERTS_ATTACH_REPORTS": True,
     # Allow users to export full CSV of table viz type.
     # This could cause the server to run out of memory or compute.
-    "ALLOW_FULL_CSV_EXPORT": False,
+    "ALLOW_FULL_CSV_EXPORT": True,
     "ALLOW_ADHOC_SUBQUERY": False,
     "USE_ANALOGOUS_COLORS": False,
     # Apply RLS rules to SQL Lab queries. This requires parsing and manipulating the

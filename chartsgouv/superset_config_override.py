@@ -1,4 +1,4 @@
-from custom_config.feature_flags import SECRET_KEY, FEATURE_FLAGS
+from custom_config.feature_flags import FEATURE_FLAGS
 from custom_config.talisman import TALISMAN_ENABLED, TALISMAN_CONFIG
 from custom_config.theme import (
     THEME_OVERRIDES,
@@ -20,6 +20,7 @@ APP_NAME = "ChartsGouv"
 
 # Specify the App icon
 APP_ICON = "/static/assets/local/images/app_icon_avec_titre_horizontal.png"
+
 # ---------------------------------------------------
 # Babel config for translations
 # ---------------------------------------------------
@@ -27,8 +28,8 @@ APP_ICON = "/static/assets/local/images/app_icon_avec_titre_horizontal.png"
 BABEL_DEFAULT_LOCALE = "fr"
 # The allowed translation for your app
 LANGUAGES = {
-    "en": {"flag": "us", "name": "Anglais"},
     "fr": {"flag": "fr", "name": "Français"},
+    "en": {"flag": "us", "name": "Anglais"},
 }
 
 # Number & Datetime format
