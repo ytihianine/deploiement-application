@@ -19,57 +19,10 @@ extraVolumes:
   - name: superset-tmp-custom-extra-config
     configMap:
       name: superset-tmp-custom-extra-config
-#  - name: client-secret
-#    secret:
-#      secretName: client-secret
 
 extraVolumeMounts:
   - name: superset-tmp-custom-extra-config
     mountPath: /app/pythonpath/custom_config
-#  - name: client-secret
-#    mountPath: /app/client_secret.json
-#    subPath: client_secret.json
-#    readOnly: true
-
-# Nécessaire d'installer les packages des connectors manuellement depuis la 4.1
-bootstrapScript: |
-  #!/bin/bash
-  # Update system packages and install dependencies
-  apt update
-
-  CONFIG_PIP=true
-
-  # Check if CONFIG_PIP is enabled
-  if [ "$CONFIG_PIP" = true ]; then
-    echo "Configuring Pip..."
-    # Define the custom PyPI index URL and trusted host
-    PIP_INDEX_URL="https://bercyhub:bercyhub@nexus.pic.dgfip.finances.rie.gouv.fr/repository/pypi/simple/"
-    PIP_TRUSTED_HOST="nexus.pic.dgfip.finances.rie.gouv.fr"
-
-    # Ensure the .pip directory exists
-    mkdir -p ~/.pip
-
-    # Create or update the pip configuration file
-    cat > ~/.pip/pip.conf <<EOL
-  [global]
-  index-url = $PIP_INDEX_URL
-  trusted-host = $PIP_TRUSTED_HOST
-  EOL
-
-    echo "Pip configuration updated successfully!"
-  else
-      echo "Skipping Pip configuration."
-  fi
-  
-  # Install Python dependencies
-  pip install psycopg2-binary==2.9.10
-  pip install openpyxl==3.1.5
-  pip install duckdb==1.2.0
-
-  # Create a bootstrap log file if not already created
-  if [ ! -f ~/bootstrap ]; then 
-    echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap
-  fi
 
 init:
   adminUser:
