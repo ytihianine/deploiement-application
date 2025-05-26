@@ -20,6 +20,16 @@ APP_NAME = "ChartsGouv"
 
 # Specify the App icon
 APP_ICON = "/static/assets/local/images/app_icon_avec_titre_horizontal.png"
+# ---------------------------------------------------
+# Babel config for translations
+# ---------------------------------------------------
+# Setup default language
+BABEL_DEFAULT_LOCALE = "fr"
+# The allowed translation for your app
+LANGUAGES = {
+    "en": {"flag": "us", "name": "Anglais"},
+    "fr": {"flag": "fr", "name": "Français"},
+}
 
 # Number & Datetime format
 D3_FORMAT = {
