@@ -1,5 +1,6 @@
 from custom_config.feature_flags import FEATURE_FLAGS
 from custom_config.talisman import TALISMAN_ENABLED, TALISMAN_CONFIG
+from custom_config.html_sanitization import HTML_SANITIZATION, HTML_SANITIZATION_SCHEMA_EXTENSIONS
 from custom_config.theme import (
     THEME_OVERRIDES,
     EXTRA_CATEGORICAL_COLOR_SCHEMES,
@@ -60,13 +61,13 @@ D3_TIME_FORMAT = {
 }
 
 # smtp server configuration
-# SMTP_HOST = "localhost"
+# SMTP_HOST = "host"
 # SMTP_STARTTLS = True
 # SMTP_SSL = False
-# SMTP_USER = "superset"
+# SMTP_USER = "username"
 # SMTP_PORT = 25
-# SMTP_PASSWORD = "superset"  # noqa: S105
-# SMTP_MAIL_FROM = "superset@superset.com"
+# SMTP_PASSWORD = "password"  # noqa: S105
+# SMTP_MAIL_FROM = "sender mail"
 # If True creates a default SSL context with ssl.Purpose.CLIENT_AUTH using the
 # default system root CA certificates.
 # SMTP_SSL_SERVER_AUTH = False
