@@ -2,7 +2,8 @@ FEATURE_FLAGS: dict[str, bool] = {
     # When using a recent version of Druid that supports JOINs turn this on
     "DRUID_JOINS": False,
     "DYNAMIC_PLUGINS": False,
-    "ENABLE_TEMPLATE_PROCESSING": False,
+    # Authorize jinja templating
+    "ENABLE_TEMPLATE_PROCESSING": True,
     # Allow for javascript controls components
     # this enables programmers to customize certain charts (like the
     # geospatial ones) by inputting javascript in controls. This exposes
@@ -32,8 +33,8 @@ FEATURE_FLAGS: dict[str, bool] = {
     "GLOBAL_ASYNC_QUERIES": False,
     "EMBEDDED_SUPERSET": False,
     # Enables Alerts and reports new implementation
-    "ALERT_REPORTS": False,
-    "ALERT_REPORT_TABS": False,
+    "ALERT_REPORTS": True,
+    "ALERT_REPORT_TABS": True,
     "ALERT_REPORT_SLACK_V2": False,
     "DASHBOARD_RBAC": True,
     "ENABLE_ADVANCED_DATA_TYPES": False,
