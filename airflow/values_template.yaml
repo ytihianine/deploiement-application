@@ -186,3 +186,7 @@ createUserJob:
 migrateDatabaseJob:
   useHelmHooks: false
   applyCustomEnv: false
+
+kubernetes:
+  enabled: true
+  role: admin
