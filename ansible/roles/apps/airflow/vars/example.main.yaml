@@ -1,0 +1,70 @@
+k8s:
+  namespace: 
+
+helm:
+  # check official links (https://airflow.apache.org/docs/helm-chart/stable/index.html)
+  repo_name: apache-airflow
+  repo_url: https://airflow.apache.org
+  chart_name: airflow
+  release_name: 
+
+values_files:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/airflow_values.yaml
+
+  # SAVE THOSE VALUES
+  fernetKey: 
+  webserverSecretKey: 
+
+  # Ingress configuration
+  ingress:
+    # Configs for the Ingress of the API Server
+    apiServer:
+      # Enable API Server ingress resource
+      enabled: false
+
+    # Configs for the Ingress of the web Service
+    web:
+      # Enable web ingress resource
+      enabled: true
+
+      # The hostnames or hosts configuration for the web Ingress
+      hosts:
+        # The hostname for the web Ingress (templated)
+        - name: CUSTOM_VALUE.lab.incubateur.finances.rie.gouv.fr
+
+  # Airflow database & redis config
+  data:
+    # Otherwise pass connection values in
+    metadataConnection:
+      user: 
+      pass: 
+      protocol: postgresql
+      host: 
+      port: 5432
+      db: 
+
+  # Airflow webserver settings
+  webserver:
+    enabled: true
+    # Create initial user.
+    defaultUser:
+      enabled: true
+      role: Admin
+      username: 
+      email: 
+      firstName: 
+      lastName: 
+      password: 
+
+  # Git sync
+  dags:
+    gitSync:
+      enabled: true
+      repo: your_repo_https_link
+      branch: main
+      rev: HEAD
+      depth: 1
+      maxFailures: 1
+      subPath: ""
+      period: 20s
