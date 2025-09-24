@@ -1,2 +1,4 @@
 values.yaml
 __pycache__
+
+**/vars/main.yaml
