@@ -1,0 +1,69 @@
+k8s:
+  namespace: 
+
+helm:
+  # check official links (https://airflow.apache.org/docs/helm-chart/stable/index.html)
+  repo_name: superset
+  repo_url: https://charts.bitnami.com/bitnami
+  chart_name: postgresql
+  release_name: postgres
+
+database:
+  load_backup: true
+  tmp_path: 
+
+s3:
+  endpoint_url: https://minio.lab.incubateur.finances.rie.gouv.fr
+  access_key: 
+  secret_key: 
+  bucket: 
+  key: 
+
+values_files:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/postgres_values.yaml
+
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 17.6.0-debian-12-r4
+
+  auth:
+    # Password for the "postgres" admin user
+    postgresPassword:
+    # User to create
+    username:
+    password:
+    database: defaultdb
+
+  primary:
+    ## @param primary.name Name of the primary database (eg primary, master, leader, ...)
+    ##
+    name: main
+    ## @param primary.resources Set container requests and limits for different resources like CPU or memory (essential for production workloads)
+    ## Example:
+    ## resources:
+    ##   requests:
+    ##     cpu: 2
+    ##     memory: 512Mi
+    ##   limits:
+    ##     cpu: 3
+    ##     memory: 1024Mi
+    ##
+    resources:
+      limits:
+        cpu: "2"
+        memory: 10Gi
+      requests:
+        cpu: 250m
+        memory: 5Gi
+    persistence:
+      ## @param primary.persistence.volumeName Name to assign the volume
+      ##
+      volumeName: "data"
+      ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 20Gi
+    ## PostgreSQL Primary Persistent Volume Claim Retention Policy
+    ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+    ##
