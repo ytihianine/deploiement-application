@@ -1,0 +1,50 @@
+k8s:
+  namespace: 
+
+helm:
+  # check official links (https://airflow.apache.org/docs/helm-chart/stable/index.html)
+  repo_name: superset
+  repo_url: http://apache.github.io/superset/
+  chart_name: superset
+  release_name: 
+
+values_files:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/chartsgouv_values.yaml
+
+  # SAVE THOSE VALUES
+  fernetKey: 
+  webserverSecretKey: 
+
+  image:
+    repository: ghcr.io/etalab-ia/chartsgouv
+    tag: 4.1.2-1.13.1-2.0.3
+
+  # Ingress configuration
+  ingress:
+    # The hostnames or hosts configuration for the web Ingress
+    hosts:
+      # The hostname for the web Ingress (templated)
+      - name: CUSTOM_VALUE.lab.incubateur.finances.rie.gouv.fr
+
+  init:
+    adminUser:
+      # Override
+      username: admin
+      password: admin
+
+  extraSecretEnv:
+    MAPBOX_API_KEY: 'your_token'
+    SUPERSET_SECRET_KEY: 'your_token'
+
+  supersetNode:
+    connections:
+      # You need to change below configuration incase bringing own PostgresSQL instance and also set postgresql.enabled:false
+      db_host: "{{ .Release.Name }}-postgresql"
+      db_port: "5432"
+      db_user: superset
+      db_pass: superset
+      db_name: superset
+  ## Set to false if bringing your own PostgreSQL.
+  postgresql:
+    enabled: false
