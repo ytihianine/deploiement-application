@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ configmap.name }}
+  namespace: {{ k8s.namespace }}
+data:
+  superset_config_override.py: |
+    {{ lookup('file', 'superset_config_override.py') | indent(4) }}

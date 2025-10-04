@@ -8,13 +8,13 @@ helm:
   chart_name: superset
   release_name: 
 
+configmap:
+  tmp_path: /tmp/configmap.yaml
+  name: test-superset-configmap
+
 values_files:
   # Path where jinja template is rendered
   tmp_path: /tmp/chartsgouv_values.yaml
-
-  # SAVE THOSE VALUES
-  fernetKey: 
-  webserverSecretKey: 
 
   image:
     repository: ghcr.io/etalab-ia/chartsgouv
@@ -33,6 +33,7 @@ values_files:
       username: admin
       password: admin
 
+  # SAVE THOSE VALUES
   extraSecretEnv:
     MAPBOX_API_KEY: 'your_token'
     SUPERSET_SECRET_KEY: 'your_token'

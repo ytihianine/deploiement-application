@@ -10,7 +10,7 @@ ingress:
   enabled: true
   ingressClassName: nginx
   hosts:
-{% for host in values_files.ingress.web.hosts %}
+{% for host in values_files.ingress.hosts %}
       # The hostname for the web Ingress (templated)
     - << host.name >>
 {% endfor %}
@@ -20,14 +20,14 @@ image:
   tag: << values_files.image.tag >>
   pullPolicy: IfNotPresent
 
-extraVolumes:
-  - name: superset-tmp-custom-extra-config
+{# extraVolumes:
+  - name: << configmap.name >>
     configMap:
-      name: superset-tmp-custom-extra-config
+      name: << configmap.name >>
 
 extraVolumeMounts:
-  - name: superset-tmp-custom-extra-config
-    mountPath: /app/pythonpath/custom_config
+  - name: << configmap.name >>
+    mountPath: /app/pythonpath/custom_config #}
 
 init:
   adminUser:
@@ -48,12 +48,11 @@ supersetNode:
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
   connections:
-    # You need to change below configuration incase bringing own PostgresSQL instance and also set postgresql.enabled:false
-    db_host: << values_files.supersetNode.connections.db_host >>
-    db_port: << values_files.supersetNode.connections.db_port >>
-    db_user: << values_files.supersetNode.connections.db_user >>
-    db_pass: << values_files.supersetNode.connections.db_pass >>
-    db_name: << values_files.supersetNode.connections.db_name >>
+    db_host: "<< values_files.supersetNode.connections.db_host | default('{{ .Release.Name }}-postgresql', true) >>"
+    db_port: "<< values_files.supersetNode.connections.db_port | default('5432', true) >>"
+    db_user: "<< values_files.supersetNode.connections.db_user | default('superset', true) >>"
+    db_pass: "<< values_files.supersetNode.connections.db_pass | default('superset', true) >>"
+    db_name: "<< values_files.supersetNode.connections.db_name | default('superset', true) >>"
 ## Set to false if bringing your own PostgreSQL.
 postgresql:
   enabled: << values_files.postgresql.enabled >>

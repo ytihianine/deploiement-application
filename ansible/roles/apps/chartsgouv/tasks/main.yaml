@@ -9,28 +9,22 @@
     src: values.yaml.jinja
     dest: "{{ values_files.tmp_path }}"
 
-- name: Delete Superset custom config ConfigMap if exists
-  kubernetes.core.k8s:
-    state: absent
-    api_version: v1
-    kind: ConfigMap
-    name: superset-tmp-custom-extra-config
-    namespace: "{{ k8s.namespace }}"
+# - name: Delete Superset custom config ConfigMap if exists
+#   kubernetes.core.k8s:
+#     state: absent
+#     api_version: v1
+#     kind: ConfigMap
+#     name: superset-tmp-custom-extra-config
+#     namespace: "{{ k8s.namespace }}"
 
-- name: Create Superset custom config ConfigMap from custom_config files
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: superset-tmp-custom-extra-config
-        namespace: "{{ k8s.namespace }}"
-      data:
-        cache_config.py: "{{ lookup('file', 'custom_config/cache_config.py') | b64decode }}"
+# - name: Render Superset custom config ConfigMap
+#   ansible.builtin.template:
+#     src: configmap.yaml.jinja
+#     dest: "{{ configmap.tmp_path }}"
 
-
-
+# - name: Apply Superset custom config ConfigMap
+#   ansible.builtin.command: >
+#     kubectl apply -f {{ configmap.tmp_path }}
 
 - name: Deploy Superset with Helm
   kubernetes.core.helm:
@@ -40,6 +34,9 @@
     create_namespace: false   # You don't have cluster-admin rights
     values_files:
       - "{{ values_files.tmp_path }}"
+    set_values:
+      - value: "configOverrides.config_override={{ role_path }}/files/superset_config_override.py"
+        value_type: file
     timeout: 10m
     state: present
 
