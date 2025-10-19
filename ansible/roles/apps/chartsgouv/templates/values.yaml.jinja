@@ -29,6 +29,18 @@ extraVolumeMounts:
   - name: << configmap.name >>
     mountPath: /app/pythonpath/custom_config #}
 
+bootstrapScript: |
+  #!/bin/bash
+  apt update && apt install -y gcc libpq-dev python3-dev pkg-config
+
+  if command -v uv > /dev/null 2>&1; then
+    uv pip install --no-cache-dir -r psycopg2-binary
+  else
+    pip install --no-cache-dir -r psycopg2-binary
+  fi;
+
+  if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
+
 init:
   adminUser:
     # Override
@@ -68,3 +80,10 @@ supersetWorker:
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
   # -- Sets the [pod disruption budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) for supersetWorker pods
+  resources:
+    limits:
+     cpu: 4000m
+     memory: 12288Mi
+    requests:
+     cpu: 2000m
+     memory: 6144Mi
