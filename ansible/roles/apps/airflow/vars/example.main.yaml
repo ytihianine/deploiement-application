@@ -16,6 +16,18 @@ values_files:
   fernetKey: 
   webserverSecretKey: 
 
+  env_vars:
+    - name: "AIRFLOW__SMTP__SMTP_HOST"
+      value: ""
+    - name: "AIRFLOW__SMTP__SMTP_PORT"
+      value: "123"
+    - name: "AIRFLOW__SMTP__SMTP_MAIL_FROM"
+      value: ""
+    - name: "AIRFLOW__SMTP__SMTP_STARTTLS"
+      value: "false"
+    - name: "AIRFLOW__SMTP__SMTP_SSL"
+      value: "false"
+
   # Ingress configuration
   ingress:
     # Configs for the Ingress of the API Server

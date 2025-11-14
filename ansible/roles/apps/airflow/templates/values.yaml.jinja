@@ -386,9 +386,12 @@ allowPodLaunching: true
 allowJobLaunching: false
 
 # Environment variables for all airflow containers
-env: []
-# - name: ""
-#   value: ""
+env:
+{% for env_var in values_files.env_vars %}
+  - name: "<< env_var.name >>"
+    value: "<< env_var.value >>"
+{% endfor %}
+
 
 # Volumes for all airflow containers
 volumes: []
