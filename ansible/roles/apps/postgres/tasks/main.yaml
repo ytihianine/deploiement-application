@@ -48,11 +48,11 @@
   when: load_backup
   ansible.builtin.shell: |
     for dump in {{ database.tmp_path }}/*.dump; do
-      echo "Restoring $dump into "{{ helm.release_name }}-postgresql"..."
+      echo "Restoring $dump into "{{ helm.release_name }}"..."
       PGPASSWORD="{{ values_files.auth.password }}" \
         pg_restore "$dump" \
         --clean --create --if-exists --no-owner \
-        -h "{{ helm.release_name }}-postgresql" -U {{ values_files.auth.username }} -d {{ values_files.auth.database }}
+        -h "{{ helm.release_name }}" -U {{ values_files.auth.username }} -d {{ values_files.auth.database }}
     done
 
 - name: Delete database backups from filesystem
