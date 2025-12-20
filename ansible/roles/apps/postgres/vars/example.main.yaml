@@ -3,10 +3,10 @@ k8s:
 
 helm:
   # check official links (https://airflow.apache.org/docs/helm-chart/stable/index.html)
-  repo_name: superset
+  repo_name: bitnamilegacy
   repo_url: https://charts.bitnami.com/bitnami
   chart_name: postgresql
-  release_name: postgres
+  release_name: 
 
 database:
   load_backup: true
@@ -25,7 +25,7 @@ values_files:
 
   image:
     registry: docker.io
-    repository: bitnami/postgresql
+    repository: bitnamilegacy/postgresql
     tag: 17.6.0-debian-12-r4
 
   auth:
