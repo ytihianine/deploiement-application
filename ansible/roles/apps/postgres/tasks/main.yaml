@@ -59,3 +59,10 @@
   ansible.builtin.file:
     path: "{{ database.tmp_path }}"
     state: absent
+
+- name: Delete MinIO alias
+  vars:
+    load_backup: "{{ database.load_backup }}"
+  when: load_backup
+  ansible.builtin.shell: |
+    mc alias remove s3_tmp_alias
