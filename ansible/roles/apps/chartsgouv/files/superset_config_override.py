@@ -1,4 +1,5 @@
 # /app/docker/pythonpath/superset_config_docker.py
+from typing import Any
 
 # ------------------------
 # Application
@@ -85,7 +86,7 @@ FEATURE_FLAGS: dict[str, bool] = {
     "THUMBNAILS": False,
     # Enables the endpoints to cache and retrieve dashboard screenshots via webdriver.
     # Requires configuring Celery and a cache using THUMBNAIL_CACHE_CONFIG.
-    "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": False,
+    "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": True,
     # Generate screenshots (PDF or JPG) of dashboards using the web driver.
     # When disabled, screenshots are generated on the fly by the browser.
     # This feature flag is used by the download feature in the dashboard view.
@@ -158,7 +159,7 @@ FEATURE_FLAGS: dict[str, bool] = {
     # Enabling this feature flag requires installing "playwright" pip package
     "PLAYWRIGHT_REPORTS_AND_THUMBNAILS": False,
     # Set to True to enable experimental chart plugins
-    "CHART_PLUGINS_EXPERIMENTAL": False,
+    "CHART_PLUGINS_EXPERIMENTAL": True,
     # Regardless of database configuration settings, force SQLLAB to run async using Celery  # noqa: E501
     "SQLLAB_FORCE_RUN_ASYNC": False,
     # Set to True to to enable factory resent CLI command
@@ -175,40 +176,11 @@ FEATURE_FLAGS: dict[str, bool] = {
 }
 
 # ------------------------
-# Number & Datetime format
-# ------------------------
-# Pour plus d'informations: https://github.com/apache/superset/blob/886f52554539318521858fbcf493123c8c4199ef/superset/config.py#L500
-D3_FORMAT = {
-    "decimal": ",",           # - decimal place string (e.g., ".").
-    "thousands": " ",         # - group separator string (e.g., " ").
-    "grouping": [3],          # - array of group sizes (e.g., [3]), cycled as needed.
-    "currency": ["", " €"]     # - currency prefix/suffix strings (e.g., ["$", ""])
-}
-D3_TIME_FORMAT = {
-    "dateTime": "%A %e %B %Y à %X",
-    "date": "%d/%m/%Y",
-    "time": "%H:%M:%S",
-    "periods": ["", ""],
-    "days": [
-        "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
-    ],
-    "shortDays": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
-    "months": [
-        "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août",
-        "Septembre", "Octobre", "Novembre", "Décembre"
-    ],
-    "shortMonths": [
-        "Jan", "Fév", "Mar", "Avr",
-        "Mai", "Jun", "Jul", "Aoû",
-        "Sep", "Oct", "Nov", "Déc"
-    ]
-}
-# ------------------------
 # HTML Sanitization
 # ------------------------
 # Pour plus d'informations: https://github.com/apache/superset/blob/886f52554539318521858fbcf493123c8c4199ef/superset/config.py#L940
 HTML_SANITIZATION = False
-
+HTML_SANITIZATION_SCHEMA_EXTENSIONS: dict[str, Any] = {}
 
 # ------------------------
 # Couleurs & Palettes
