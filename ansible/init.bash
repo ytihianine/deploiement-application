@@ -5,6 +5,7 @@ host=localhost
 pb_airflow=playbooks/airflow.yaml
 pb_chartsgouv=playbooks/chartsgouv.yaml
 pb_postgresql=playbooks/postgresql.yaml
+pb_n8n=playbooks/n8n.yaml
 
 # Ansible installation
 echo "Installing Ansible on the control node ..."
@@ -33,10 +34,11 @@ echo "0) Dupliquer fichiers d'exemple"
 echo "1) Airflow"
 echo "2) PostgreSQL"
 echo "3) Chartsgouv"
-echo "4) All"
-echo "5) Exit"
+echo "4) N8N"
+echo "5) All"
+echo "6) Exit"
 
-read -p "Enter your choice (0-5): " choice
+read -p "Enter your choice (0-6): " choice
 
 echo "Début: $(date)"
 
@@ -54,11 +56,14 @@ case "$choice" in
         deploy_playbook "$pb_chartsgouv"
         ;;
     4)
+        deploy_playbook "$pb_n8n"
+        ;;
+    5)
         deploy_playbook "$pb_postgresql"
         deploy_playbook "$pb_airflow"
         deploy_playbook "$pb_chartsgouv"
         ;;
-    5)
+    6)
         echo "Exiting."
         exit 0
         ;;

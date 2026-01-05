@@ -1,0 +1,42 @@
+k8s:
+  namespace: to_define
+
+helm:
+  repo_name: oci://8gears.container-registry.com/library
+  chart_name: n8n
+  chart_version: 1.0.0
+  release_name: to_define
+
+values_files:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/n8n_values.yaml
+
+  config:
+    log:
+      level: info
+    db:
+      type: postgresdb
+      postgresdb:
+        host: 192.168.0.1
+        database: n8n_config
+        username: to_define
+  # SAVE THOSE VALUES
+  secret:
+     n8n:
+        # if you run n8n stateless, you should provide an encryption key here.
+       encryption_key: to_define
+  
+     db:
+       postgresdb:
+         password: 'to_define'
+
+  ingress:
+    enabled: true
+    className: ""
+    hosts: []
+      # Example - templated
+      # - host: workflow.example.com
+      #   paths:
+      #     - path: /
+      #       pathType: Prefix
+
