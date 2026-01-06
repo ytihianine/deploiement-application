@@ -3,6 +3,7 @@
   kubernetes.core.helm_repository:
     name: "{{ helm.repo_name }}"
     repo_url: "{{ helm.repo_url }}"
+    force_update: true
 
 - name: Render Airflow values file
   ansible.builtin.template:

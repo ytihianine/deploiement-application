@@ -13,10 +13,22 @@ values_files:
   tmp_path: /tmp/airflow_values.yaml
 
   # SAVE THOSE VALUES
-  fernetKey: 
-  webserverSecretKey: 
+  fernetKey:
+  webserverSecretKey:  # Airflow 2+
+  apiSecretKey: # Airflow 3+
+  jwtSecret: # Airflow 3+
 
   env_vars:
+    # Logging
+    - name: "AIRFLOW__LOGGING__REMOTE_LOGGING"
+      value: False
+    - name: "AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID"
+      value: 
+    - name: "AIRFLOW__LOGGING__DELETE_LOCAL_LOGS"
+      value:  False
+    - name: "AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER"
+      value:  
+    # SMTP
     - name: "AIRFLOW__SMTP__SMTP_HOST"
       value: ""
     - name: "AIRFLOW__SMTP__SMTP_PORT"
@@ -28,22 +40,26 @@ values_files:
     - name: "AIRFLOW__SMTP__SMTP_SSL"
       value: "false"
 
-  # Ingress configuration
+  # Ingress configuration - Airflow 3+
   ingress:
     # Configs for the Ingress of the API Server
     apiServer:
       # Enable API Server ingress resource
-      enabled: false
+      enabled: true
+      # The hostnames or hosts configuration for the web Ingress
+      hosts:
+        # The hostname for the web Ingress (templated)
+        - name: custom.lab.incubateur.finances.rie.gouv.fr
 
-    # Configs for the Ingress of the web Service
+    # Configs for the Ingress of the web Service - Airflow < 3
     web:
       # Enable web ingress resource
-      enabled: true
+      enabled: false
 
       # The hostnames or hosts configuration for the web Ingress
       hosts:
         # The hostname for the web Ingress (templated)
-        - name: CUSTOM_VALUE.lab.incubateur.finances.rie.gouv.fr
+        - name: custom.lab.incubateur.finances.rie.gouv.fr
 
   # Airflow database & redis config
   data:
@@ -76,7 +92,8 @@ values_files:
       repo: your_repo_https_link
       branch: main
       rev: HEAD
+      ref: main
       depth: 1
       maxFailures: 1
-      subPath: ""
+      # subPath:
       period: 20s
