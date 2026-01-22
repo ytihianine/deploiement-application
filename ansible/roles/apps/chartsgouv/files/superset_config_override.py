@@ -86,12 +86,12 @@ FEATURE_FLAGS: dict[str, bool] = {
     "THUMBNAILS": False,
     # Enables the endpoints to cache and retrieve dashboard screenshots via webdriver.
     # Requires configuring Celery and a cache using THUMBNAIL_CACHE_CONFIG.
-    "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": True,
+    "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS": False,
     # Generate screenshots (PDF or JPG) of dashboards using the web driver.
     # When disabled, screenshots are generated on the fly by the browser.
     # This feature flag is used by the download feature in the dashboard view.
     # It is dependent on ENABLE_DASHBOARD_SCREENSHOT_ENDPOINT being enabled.
-    "ENABLE_DASHBOARD_DOWNLOAD_WEBDRIVER_SCREENSHOT": True,
+    "ENABLE_DASHBOARD_DOWNLOAD_WEBDRIVER_SCREENSHOT": False,
     "TAGGING_SYSTEM": True,
     "SQLLAB_BACKEND_PERSISTENCE": True,
     "LISTVIEWS_DEFAULT_CARD_VIEW": False,
