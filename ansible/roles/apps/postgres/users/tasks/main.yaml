@@ -3,10 +3,10 @@
 
 - name: Create PostgreSQL users
   community.postgresql.postgresql_user:
-    login_host: "{{ values_files.database.auth.login_host }}"
-    login_user: "{{ values_files.database.auth.login_user }}"
-    login_password: "{{ values_files.database.auth.login_password }}"
-    login_db: "{{ item.login_db | default(values_files.database.auth.login_db) }}"
+    login_host: "{{ database.auth.login_host }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    login_db: "{{ item.login_db | default(database.auth.login_db) }}"
     name: "{{ item.name }}"
     password: "{{ item.password }}"
     state: present
@@ -16,48 +16,48 @@
 
 - name: Grant database privileges to users
   community.postgresql.postgresql_privs:
-    login_host: "{{ values_files.database.auth.login_host }}"
-    login_user: "{{ values_files.database.auth.login_user }}"
-    login_password: "{{ values_files.database.auth.login_password }}"
-    login_db: "{{ values_files.database.auth.login_db }}"
+    login_host: "{{ database.auth.login_host }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    login_db: "{{ database.auth.login_db }}"
     state: present
     privs: "{{ item.1 }}"
     type: database
-  loop: "{{ values_files.database.users | default([]) | subelements('db_privileges', skip_missing=True) }}"
+  loop: "{{ database.users | default([]) | subelements('db_privileges', skip_missing=True) }}"
 
 - name: Grant schema privileges to users
   community.postgresql.postgresql_privs:
-    login_host: "{{ values_files.database.auth.login_host }}"
-    login_user: "{{ values_files.database.auth.login_user }}"
-    login_password: "{{ values_files.database.auth.login_password }}"
-    login_db: "{{ values_files.database.auth.login_db }}"
+    login_host: "{{ database.auth.login_host }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    login_db: "{{ database.auth.login_db }}"
     state: present
     type: schema
     privs: "{{ item.1 }}"
-  loop: "{{ values_files.database.users | default([]) | subelements('schema_privileges', skip_missing=True) }}"
+  loop: "{{ database.users | default([]) | subelements('schema_privileges', skip_missing=True) }}"
 
 - name: Grant table privileges to users
   community.postgresql.postgresql_privs:
-    login_host: "{{ values_files.database.auth.login_host }}"
-    login_user: "{{ values_files.database.auth.login_user }}"
-    login_password: "{{ values_files.database.auth.login_password }}"
-    login_db: "{{ values_files.database.auth.login_db }}"
+    login_host: "{{ database.auth.login_host }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    login_db: "{{ database.auth.login_db }}"
     state: present
     schema: not-specified
     type: table
     privs: "{{ item.1 }}"
     objs: ALL_IN_SCHEMA
-  loop: "{{ values_files.database.users | default([]) | subelements('table_privileges', skip_missing=True) }}"
+  loop: "{{ database.users | default([]) | subelements('table_privileges', skip_missing=True) }}"
 
 - name: Grant sequence privileges to users
   community.postgresql.postgresql_privs:
-    login_host: "{{ values_files.database.auth.login_host }}"
-    login_user: "{{ values_files.database.auth.login_user }}"
-    login_password: "{{ values_files.database.auth.login_password }}"
-    login_db: "{{ values_files.database.auth.login_db }}"
+    login_host: "{{ database.auth.login_host }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    login_db: "{{ database.auth.login_db }}"
     state: present
     schema: not-specified
     type: sequence
     privs: "{{ item.1 }}"
     objs: ALL_IN_SCHEMA
-  loop: "{{ values_files.database.users | default([]) | subelements('sequence_privileges', skip_missing=True) }}"
+  loop: "{{ database.users | default([]) | subelements('sequence_privileges', skip_missing=True) }}"
