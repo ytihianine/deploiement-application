@@ -4,4 +4,4 @@
   gather_facts: no
   # become: yes
   roles:
-    - { role: apps/postgres }
+    - { role: apps/postgres/services }
