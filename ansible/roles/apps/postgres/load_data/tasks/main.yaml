@@ -1,40 +1,41 @@
 ---
 # Executing the following tasks only if database.load_backup is set to True else skipping
 - name: Configure MinIO alias
-  vars:
-    load_backup: "{{ database.load_backup }}"
-  when: load_backup
   ansible.builtin.shell: |
-    mc alias set s3_tmp_alias {{ s3.endpoint_url }} {{ s3.access_key }} {{ s3.secret_key }}
+    mc alias set {{ s3.alias_name }} {{ s3.endpoint_url }} {{ s3.access_key }} {{ s3.secret_key }}
 
 - name: Download database backups
-  vars:
-    load_backup: "{{ database.load_backup }}"
-  when: load_backup
   ansible.builtin.command: >
-    mc cp --recursive "s3_tmp_alias/{{ s3.bucket }}/{{ s3.key }}" "{{ database.tmp_path }}"
+    mc cp --recursive "{{ s3.alias_name }}/{{ s3.bucket }}/{{ s3.key }}" "{{ filesystem.tmp_path }}"
 
-- name: Restore PostgreSQL dumps
-  vars:
-    load_backup: "{{ database.load_backup }}"
-  when: load_backup
-  ansible.builtin.shell: |
-    for dump in {{ database.tmp_path }}/*.dump; do
-      echo "Restoring $dump into "{{ helm.release_name }}"..."
-      PGPASSWORD="{{ values_files.auth.password }}" \
-        pg_restore "$dump" \
-        --clean --create --if-exists --no-owner \
-        -h "{{ helm.release_name }}" -U {{ values_files.auth.username }} -d {{ values_files.auth.database }}
-    done
+- name: List all backup files in the temporary directory
+  ansible.builtin.find:
+    paths: "{{ filesystem.tmp_path }}"
+    patterns: "*.dump,*.sql,*.tar,*.backup"
+    recurse: yes
+  register: backup_files
+
+- name: Display found backup files
+  ansible.builtin.debug:
+    msg: "Found {{ backup_files.matched }} backup file(s): {{ backup_files.files | map(attribute='path') | list }}"
+
+- name: Restore database using the tar format
+  community.postgresql.postgresql_db:
+    login_host: "{{ database.auth.login_host }}"
+    login_port: "{{ database.auth.login_port }}"
+    name: "{{ database.auth.login_db }}"
+    login_user: "{{ database.auth.login_user }}"
+    login_password: "{{ database.auth.login_password }}"
+    state: restore
+    target: "{{ item.path }}"
+  loop: "{{ backup_files.files }}"
+  when: backup_files.matched > 0
 
 - name: Delete database backups from filesystem
   ansible.builtin.file:
-    path: "{{ database.tmp_path }}"
+    path: "{{ filesystem.tmp_path }}"
     state: absent
 
 - name: Delete MinIO alias
-  vars:
-    load_backup: "{{ database.load_backup }}"
-  when: load_backup
   ansible.builtin.shell: |
-    mc alias remove s3_tmp_alias
+    mc alias remove {{ s3.alias_name }}
