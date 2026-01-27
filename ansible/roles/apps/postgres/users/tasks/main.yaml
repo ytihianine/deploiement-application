@@ -1,0 +1,136 @@
+---
+# Tâches pour créer et gérer les utilisateurs PostgreSQL avec leurs droits
+
+- name: Load users configuration
+  ansible.builtin.include_vars:
+    file: "{{ postgres_users_file | default('users.yaml') }}"
+    name: users_config
+  when: postgres_users_file is defined or lookup('first_found', dict(files=['users.yaml'], skip=true), errors='ignore')
+
+- name: Wait for PostgreSQL to be ready
+  ansible.builtin.command: >
+    kubectl wait --for=condition=ready pod
+    -l app.kubernetes.io/name={{ helm.chart_name }},app.kubernetes.io/instance={{ helm.release_name }}
+    -n {{ k8s.namespace }}
+    --timeout=300s
+  changed_when: false
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Create PostgreSQL users
+  community.postgresql.postgresql_user:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ values_files.auth.database }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    state: present
+    encrypted: true
+  loop: "{{ users_config.database.users | default([]) }}"
+  when: users_config is defined and users_config.database.users is defined
+  no_log: true  # Ne pas afficher les mots de passe dans les logs
+
+- name: Grant database privileges to users
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ values_files.auth.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: database
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('db_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Grant schema privileges to users
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ item.0.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: schema
+    objs: "{{ item.0.schema | default('public') }}"
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('schema_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Grant table privileges to users
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ item.0.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: table
+    objs: "{{ item.0.tables | default('ALL_IN_SCHEMA') }}"
+    schema: "{{ item.0.schema | default('public') }}"
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('table_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Grant sequence privileges to users
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ item.0.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: sequence
+    objs: "{{ item.0.sequences | default('ALL_IN_SCHEMA') }}"
+    schema: "{{ item.0.schema | default('public') }}"
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('sequence_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Set default privileges for future tables
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ item.0.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: default_privs
+    objs: TABLES
+    schema: "{{ item.0.schema | default('public') }}"
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('default_table_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Set default privileges for future sequences
+  community.postgresql.postgresql_privs:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ item.0.database }}"
+    database: "{{ item.0.database }}"
+    state: present
+    privs: "{{ item.1 }}"
+    type: default_privs
+    objs: SEQUENCES
+    schema: "{{ item.0.schema | default('public') }}"
+    role: "{{ item.0.name }}"
+  loop: "{{ users_config.database.users | default([]) | subelements('default_sequence_privileges', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
+
+- name: Grant role memberships
+  community.postgresql.postgresql_membership:
+    login_host: "{{ helm.release_name }}.{{ k8s.namespace }}.svc.cluster.local"
+    login_user: "{{ values_files.auth.username }}"
+    login_password: "{{ values_files.auth.password }}"
+    login_db: "{{ values_files.auth.database }}"
+    group: "{{ item.1 }}"
+    target_role: "{{ item.0.name }}"
+    state: present
+  loop: "{{ users_config.database.users | default([]) | subelements('roles', skip_missing=True) }}"
+  when: users_config is defined and users_config.database.users is defined
