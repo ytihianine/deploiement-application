@@ -1,8 +1,8 @@
 ---
-# - name: Add n8n Helm repo
-#   kubernetes.core.helm_repository:
-#     name: "{{ helm.repo_name }}"
-#     repo_url: "{{ helm.repo_url }}"
+- name: Add n8n Helm repo
+  kubernetes.core.helm_repository:
+    name: "{{ helm.repo_name }}"
+    repo_url: "{{ helm.repo_url }}"
 
 - name: Render n8n values file
   ansible.builtin.template:
