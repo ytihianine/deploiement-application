@@ -1,0 +1,61 @@
+# Configuration des playbooks Ansible
+# Ce fichier permet de définir les métadonnées, descriptions et dépendances des playbooks
+
+playbooks:
+  postgresql-service:
+    description: "Déploie le service PostgreSQL sur Kubernetes"
+    order: 1
+    tags:
+      - database
+      - infrastructure
+    requires: []
+  
+  postgresql-users:
+    description: "Crée les utilisateurs et permissions PostgreSQL"
+    order: 2
+    tags:
+      - database
+      - security
+    requires:
+      - postgresql-service
+  
+  postgresql-restore:
+    description: "Restaure une base de données PostgreSQL depuis une sauvegarde"
+    order: 3
+    tags:
+      - database
+      - backup
+    requires:
+      - postgresql-service
+  
+  airflow:
+    description: "Déploie Apache Airflow pour l'orchestration des workflows"
+    order: 10
+    tags:
+      - application
+      - orchestration
+    requires:
+      - postgresql-service
+  
+  chartsgouv:
+    description: "Déploie Charts Gouv (Superset) pour la visualisation de données"
+    order: 11
+    tags:
+      - application
+      - visualization
+    requires:
+      - postgresql-service
+  
+  n8n:
+    description: "Déploie n8n pour l'automatisation des workflows"
+    order: 12
+    tags:
+      - application
+      - automation
+    requires:
+      - postgresql-service
+
+# Configuration globale
+global:
+  default_inventory: "localhost"
+  max_parallel_workers: 4
