@@ -10,7 +10,7 @@ help: ## Affiche cette aide
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 	@echo ""
-	@echo "Pour plus d'options, utilisez: ./ansible_cli.py --help"
+	@echo "Pour plus d'options, utilisez: ./cli.py --help"
 
 install-packages: ## Installe les dépendances Python uniquement
 	@echo "Installation des packages Python ..."
