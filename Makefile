@@ -25,10 +25,10 @@ install-collections: ## Installe les collections Ansible requises
 install: install-packages install-collections ## Installe les dépendances Python et les collections Ansible
 
 list: ## Liste tous les playbooks disponibles
-	$(CLI) list
+	$(CLI) ls
 
 list-verbose: ## Liste les playbooks avec détails complets
-	$(CLI) list -v
+	$(CLI) ls -v
 
 duplicate: ## Duplique les fichiers example.main.yaml vers main.yaml
 	$(CLI) duplicate
@@ -45,6 +45,9 @@ run-chartsgouv: ## Déploie Charts Gouv (Superset)
 
 run-n8n: ## Déploie n8n
 	$(CLI) run n8n
+
+run-polaris: ## Déploie polaris
+	$(CLI) run polaris
 
 run-all: ## Déploie tous les playbooks en séquentiel
 	$(CLI) run --all

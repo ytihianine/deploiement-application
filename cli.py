@@ -310,7 +310,7 @@ def cli(ctx):
 @cli.command()
 @click.option('-v', '--verbose', is_flag=True, help='Affichage détaillé')
 @pass_cli
-def list(cli_obj, verbose):
+def ls(cli_obj, verbose):
     """Liste les playbooks disponibles."""
     cli_obj.list_playbooks(verbose=verbose)
 
@@ -322,7 +322,6 @@ def duplicate(cli_obj):
     cli_obj.duplicate_example_files()
 
 
-@cli.command()
 @click.argument('playbooks', nargs=-1)
 @click.option('--all', is_flag=True, help='Exécuter tous les playbooks')
 @click.option('-i', '--inventory', default='localhost', help='Fichier d\'inventaire (défaut: localhost)')
