@@ -1,0 +1,45 @@
+#jinja2:variable_start_string:'<<' , variable_end_string:'>>'
+
+serviceMonitor:
+  # -- Specifies whether a ServiceMonitor for Prometheus operator should be created.
+  enabled: << values.serviceMonitor.enabled >>
+
+persistence:
+  # -- The type of persistence to use. Two built-in types are supported: in-memory and relational-jdbc.
+  type: relational-jdbc  # relational-jdbc
+  # -- The configuration for the relational-jdbc persistence manager.
+  relationalJdbc:
+    # -- The secret name to pull the database connection properties from.
+    secret:
+      # -- The secret name to pull database connection properties from
+      name: << secret.db.name >>
+      # -- The secret key holding the database username for authentication
+      username: username
+      # -- The secret key holding the database password for authentication
+      password: password
+      # -- The secret key holding the database JDBC connection URL
+      jdbcUrl: jdbcUrl
+
+
+# -- Storage credentials for the server. If the following properties are unset, default
+# credentials will be used, in which case the pod must have the necessary permissions to access the storage.
+storage:
+  # -- The secret to pull storage credentials from.
+  secret:
+    # -- The name of the secret to pull storage credentials from.
+    name: << secret.s3.name >>
+    # -- The key in the secret to pull the AWS access key ID from. Only required when using AWS.
+    awsAccessKeyId: awsAccessKeyId
+    # -- The key in the secret to pull the AWS secret access key from. Only required when using AWS.
+    awsSecretAccessKey: awsSecretAccessKey
+
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+{% for host in values.ingress.hosts %}
+      # The hostname for the web Ingress (templated)
+    - host: << host.name >>
+{% endfor %}

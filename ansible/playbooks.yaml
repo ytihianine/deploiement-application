@@ -55,6 +55,13 @@ playbooks:
     requires:
       - postgresql-service
 
+  polaris:
+    description: "Déploie Apache polaris pour le catalog Iceberg"
+    order: 12
+    tags:
+      - catalog
+      - automation
+
 # Configuration globale
 global:
   default_inventory: "localhost"

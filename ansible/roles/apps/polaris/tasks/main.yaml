@@ -1,0 +1,56 @@
+---
+- name: Add polaris Helm repo
+  kubernetes.core.helm_repository:
+    name: "{{ helm.repo_name }}"
+    repo_url: "{{ helm.repo_url }}"
+
+- name: Render db secret
+  ansible.builtin.template:
+    src: secret_db.yaml.jinja
+    dest: "{{ secret.db.dest }}"
+
+- name: Render s3 secret
+  ansible.builtin.template:
+    src: secret_s3.yaml.jinja
+    dest: "{{ secret.s3.dest }}"
+
+- name: Create polaris db secret
+  ansible.builtin.command: >
+    kubectl apply -f {{ secret.db.dest }}
+
+- name: Create polaris s3 secret
+  ansible.builtin.command: >
+    kubectl apply -f {{ secret.s3.dest }}
+
+- name: Render polaris values file
+  ansible.builtin.template:
+    src: values.yaml.jinja
+    dest: "{{ values.tmp_path }}"
+
+- name: Deploy polaris with Helm
+  kubernetes.core.helm:
+    name: "{{ helm.release_name }}"
+    chart_ref: "{{ helm.repo_name }}/{{ helm.chart_name }}"
+    chart_version: "{{ helm.chart_version }}"
+    release_namespace: "{{ k8s.namespace }}"
+    create_namespace: false   # You don't have cluster-admin rights
+    disable_hook: True
+    values_files:
+      - "{{ values.tmp_path }}"
+    timeout: 10m
+    state: present
+
+- name: Remove rendered values file
+  ansible.builtin.file:
+    path: "{{ values.tmp_path }}"
+    state: absent
+
+- name: Remove rendered db secret file
+  ansible.builtin.file:
+    path: "{{ secret.db.dest }}"
+    state: absent
+
+- name: Remove rendered s3 secret file
+  ansible.builtin.file:
+    path: "{{ secret.s3.dest }}"
+    state: absent

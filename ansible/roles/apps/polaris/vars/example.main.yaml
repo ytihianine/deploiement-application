@@ -1,0 +1,41 @@
+k8s:
+  namespace: to_define
+
+helm:
+  repo_name: polaris
+  repo_url: https://downloads.apache.org/incubator/polaris/helm-chart
+  chart_name: polaris
+  chart_version: 1.3.0
+  release_name: polaris-release
+
+secret:
+  db:
+    name: polaris-db-secret
+    dest: /tmp/polaris_secret_db.yaml
+    username:
+    password:
+    # format: jdbc:postgresql://<host>:<port>/<database>?<additional_parameters>
+    jdbcUrl: 
+  s3:
+    name: polaris-storage-secret
+    dest: polaris_secret_storage.yaml
+    awsAccessKeyId: 
+    awsSecretAccessKey:
+
+values:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/polaris_values.yaml
+
+  serviceMonitor:
+    enabled: false
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: host.lab.incubateur.finances.rie.gouv.fr
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+
