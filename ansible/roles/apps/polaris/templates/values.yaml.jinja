@@ -39,7 +39,7 @@ ingress:
   className: "nginx"
   annotations: {}
   hosts:
-{% for host in values.ingress.hosts %}
+{% for host_conf in values.ingress.hosts %}
       # The hostname for the web Ingress (templated)
-    - host: << host.name >>
+    - host: << host_conf.host >>
 {% endfor %}
