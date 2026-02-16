@@ -353,6 +353,7 @@ def duplicate(cli_obj):
     cli_obj.duplicate_example_files()
 
 
+@cli.command()
 @click.argument("playbooks", nargs=-1)
 @click.option("--all", is_flag=True, help="Exécuter tous les playbooks")
 @click.option(
