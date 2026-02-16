@@ -254,6 +254,7 @@ class AnsibleCLI:
         else:
             print(f"{Colors.BOLD}Mode séquentiel{Colors.ENDC}\n")
             for name in ordered_playbooks:
+                print(kwargs)
                 results.append(self._run_playbook(name, **kwargs))
 
         return results
@@ -311,7 +312,7 @@ class AnsibleCLI:
             print(f"  {status} - {name}")
 
             if return_code != 0 and stderr:
-                print(f"{Colors.FAIL}    Erreur: {stderr[:200]}{Colors.ENDC}")
+                print(f"{Colors.FAIL}  Erreur: {stderr}{Colors.ENDC}")
 
         print(
             f"\n{Colors.BOLD}Total: {len(results)} | Succès: {Colors.OKGREEN}{success_count}{Colors.ENDC} | Échecs: {Colors.FAIL}{fail_count}{Colors.ENDC}\n"  # noqa
@@ -379,7 +380,7 @@ def duplicate(cli_obj):
 @click.option("--show-output", is_flag=True, help="Afficher la sortie complète")
 @pass_cli
 def run(
-    cli_obj,
+    cli_obj: AnsibleCLI,
     playbooks,
     all,
     inventory,
@@ -390,7 +391,7 @@ def run(
     max_workers,
     dry_run,
     verbose,
-    show_output,
+    show_output: bool = True,
 ):
     """Exécute un ou plusieurs playbooks.
 
