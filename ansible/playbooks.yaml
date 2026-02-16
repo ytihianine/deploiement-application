@@ -9,7 +9,7 @@ playbooks:
       - database
       - infrastructure
     requires: []
-  
+
   postgresql-users:
     description: "Crée les utilisateurs et permissions PostgreSQL"
     order: 2
@@ -18,7 +18,7 @@ playbooks:
       - security
     requires:
       - postgresql-service
-  
+
   postgresql-restore:
     description: "Restaure une base de données PostgreSQL depuis une sauvegarde"
     order: 3
@@ -27,7 +27,7 @@ playbooks:
       - backup
     requires:
       - postgresql-service
-  
+
   airflow:
     description: "Déploie Apache Airflow pour l'orchestration des workflows"
     order: 10
@@ -36,7 +36,7 @@ playbooks:
       - orchestration
     requires:
       - postgresql-service
-  
+
   chartsgouv:
     description: "Déploie Charts Gouv (Superset) pour la visualisation de données"
     order: 11
@@ -45,7 +45,7 @@ playbooks:
       - visualization
     requires:
       - postgresql-service
-  
+
   n8n:
     description: "Déploie n8n pour l'automatisation des workflows"
     order: 12
@@ -61,8 +61,3 @@ playbooks:
     tags:
       - catalog
       - automation
-
-# Configuration globale
-global:
-  default_inventory: "localhost"
-  max_parallel_workers: 4
