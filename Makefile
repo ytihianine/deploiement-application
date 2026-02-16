@@ -24,6 +24,10 @@ install-collections: ## Installe les collections Ansible requises
 
 install: install-packages install-collections ## Installe les dépendances Python et les collections Ansible
 
+setup-env: install-packages ## Installe les dépendances et les pre-commits
+	# Installer les pre-commits
+	pre-commit install
+
 list: ## Liste tous les playbooks disponibles
 	$(CLI) ls
 
