@@ -13,7 +13,7 @@ import sys
 import yaml
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import List, Mapping, Tuple
 
 
 class Colors:
@@ -33,7 +33,7 @@ class Colors:
 class AnsibleCLI:
     """Classe principale pour gérer l'exécution des playbooks Ansible"""
 
-    def __init__(self, base_dir: str | None = None):
+    def __init__(self, base_dir: str | None = None) -> None:
         """
         Initialise le CLI
 
@@ -45,7 +45,7 @@ class AnsibleCLI:
         self.config_file = self.base_dir / "ansible" / "playbooks.yaml"
         self.playbooks = self._discover_playbooks()
 
-    def _discover_playbooks(self) -> Dict[str, Dict]:
+    def _discover_playbooks(self) -> Mapping[str, Mapping]:
         """
         Découvre automatiquement les playbooks disponibles
 
@@ -83,7 +83,7 @@ class AnsibleCLI:
 
         return dict(sorted(playbooks.items(), key=lambda x: x[1]["order"]))
 
-    def list_playbooks(self, verbose: bool = False):
+    def list_playbooks(self, verbose: bool = False) -> None:
         """
         Liste tous les playbooks disponibles
 
@@ -109,7 +109,7 @@ class AnsibleCLI:
                     print(f"  Dépendances: {', '.join(info['requires'])}")
             print()
 
-    def duplicate_example_files(self):
+    def duplicate_example_files(self) -> None:
         """Duplique les fichiers example.main.yaml vers main.yaml"""
         print(f"{Colors.OKCYAN}Duplication des fichiers d'exemple...{Colors.ENDC}")
 
@@ -135,7 +135,7 @@ class AnsibleCLI:
         self,
         playbook_name: str,
         inventory: str = "localhost",
-        extra_vars: Dict | None = None,
+        extra_vars: Mapping | None = None,
         tags: List[str] | None = None,
         skip_tags: List[str] | None = None,
         dry_run: bool = False,
@@ -272,7 +272,7 @@ class AnsibleCLI:
         resolved = []
         seen = set()
 
-        def add_with_deps(name: str):
+        def add_with_deps(name: str) -> None:
             if name in seen or name not in self.playbooks:
                 return
 
@@ -289,7 +289,7 @@ class AnsibleCLI:
 
         return resolved
 
-    def print_summary(self, results: List[Tuple[str, int, str, str]]):
+    def print_summary(self, results: List[Tuple[str, int, str, str]]) -> None:
         """
         Affiche un résumé des exécutions
 
@@ -325,7 +325,7 @@ pass_cli = click.make_pass_decorator(AnsibleCLI, ensure=True)
 
 @click.group(invoke_without_command=True)
 @click.pass_context
-def cli(ctx):
+def cli(ctx) -> None:
     """CLI pour gérer et exécuter les playbooks Ansible.
 
     Supporte l'exécution parallèle, la gestion des dépendances et
@@ -342,14 +342,14 @@ def cli(ctx):
 @cli.command()
 @click.option("-v", "--verbose", is_flag=True, help="Affichage détaillé")
 @pass_cli
-def ls(cli_obj, verbose):
+def ls(cli_obj, verbose) -> None:
     """Liste les playbooks disponibles."""
     cli_obj.list_playbooks(verbose=verbose)
 
 
 @cli.command()
 @pass_cli
-def duplicate(cli_obj):
+def duplicate(cli_obj) -> None:
     """Duplique les fichiers example.main.yaml vers main.yaml."""
     cli_obj.duplicate_example_files()
 
@@ -392,7 +392,7 @@ def run(
     dry_run,
     verbose,
     show_output: bool = True,
-):
+) -> None:
     """Exécute un ou plusieurs playbooks.
 
     Exemples:
@@ -478,7 +478,7 @@ def run(
         sys.exit(1)
 
 
-def main():
+def main() -> None:
     """Point d'entrée principal du CLI"""
     cli()
 
