@@ -7,7 +7,7 @@ repos:
     -   id: trailing-whitespace
         exclude: '\.md$'
     -   id: end-of-file-fixer
-        exclude: '\.md$'
+        exclude: '\.(md|cfg)$'
     -   id: check-yaml
     -   id: check-added-large-files
 -   repo: https://github.com/psf/black
