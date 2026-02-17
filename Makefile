@@ -38,20 +38,8 @@ duplicate: ## Duplique les fichiers example.main.yaml vers main.yaml
 	$(CLI) duplicate
 
 # Exécution des playbooks
-run-postgres: ## Déploie PostgreSQL (service + users)
-	$(CLI) run postgresql-service postgresql-users
-
-run-airflow: ## Déploie Airflow
-	$(CLI) run airflow
-
-run-chartsgouv: ## Déploie Charts Gouv (Superset)
-	$(CLI) run chartsgouv
-
-run-n8n: ## Déploie n8n
-	$(CLI) run n8n
-
-run-polaris: ## Déploie polaris
-	$(CLI) run polaris
+run: ## Déploie un playbook spécifique (ex: make run polaris, make run polaris postgresql-service)
+	$(CLI) run $(filter-out $@,$(MAKECMDGOALS))
 
 run-all: ## Déploie tous les playbooks en séquentiel
 	$(CLI) run --all
