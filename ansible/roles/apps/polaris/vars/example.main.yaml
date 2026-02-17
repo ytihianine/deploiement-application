@@ -15,12 +15,16 @@ secret:
     username:
     password:
     # format: jdbc:postgresql://<host>:<port>/<database>?<additional_parameters>
-    jdbcUrl: 
+    jdbcUrl:
   s3:
     name: polaris-storage-secret
     dest: polaris_secret_storage.yaml
-    awsAccessKeyId: 
+    awsAccessKeyId:
     awsSecretAccessKey:
+
+user:
+  name: root
+  password: s3cr3t
 
 values:
   # Path where jinja template is rendered
@@ -38,4 +42,3 @@ values:
         paths:
           - path: /
             pathType: ImplementationSpecific
-
