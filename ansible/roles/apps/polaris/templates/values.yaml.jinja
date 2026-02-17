@@ -41,4 +41,7 @@ ingress:
   hosts:
 {% for host_conf in values.ingress.hosts %}
     - host: << host_conf.host >>
+      paths:
+      - path: /
+        pathType: Prefix
 {% endfor %}
