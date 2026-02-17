@@ -40,6 +40,18 @@
     timeout: 10m
     state: present
 
+- name: Bootstrap polaris deployment
+  ansible.builtin.command: >
+    kubectl run polaris-bootstrap \
+      --image=apache/polaris-admin-tool:latest \
+      --restart=Never \
+      --rm -it \
+      --env="quarkus.datasource.username={{ secret.db.username }}" \
+      --env="quarkus.datasource.password={{ secret.db.password }}" \
+      --env="quarkus.datasource.jdbc.url={{ secret.db.jdbcUrl }}" \
+      -- \
+      bootstrap -r POLARIS -c POLARIS,{{user.name}},{{user.password}} -p
+
 - name: Remove rendered values file
   ansible.builtin.file:
     path: "{{ values.tmp_path }}"
