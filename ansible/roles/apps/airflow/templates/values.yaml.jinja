@@ -15,10 +15,10 @@ airflowVersion: "3.1.5"
 # Images
 images:
   airflow:
-    repository: ghcr.io/ytihianine/airflow-custom
-    tag: 3.1.5
+    repository: ghcr.io/ytihianine/traitement-de-donnees
+    tag: 3.1.7
     # Specifying digest takes precedence over tag.
-    # digest: 
+    # digest:
     pullPolicy: Always
 
 # Ingress configuration
@@ -189,4 +189,3 @@ logs:
   persistence:
     # Enable persistent volume for storing logs
     enabled: false
-

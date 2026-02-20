@@ -1,12 +1,12 @@
 k8s:
-  namespace: 
+  namespace:
 
 helm:
   # check official links (https://airflow.apache.org/docs/helm-chart/stable/index.html)
   repo_name: apache-airflow
   repo_url: https://airflow.apache.org
   chart_name: airflow
-  release_name: 
+  release_name:
 
 values_files:
   # Path where jinja template is rendered
@@ -23,11 +23,11 @@ values_files:
     - name: "AIRFLOW__LOGGING__REMOTE_LOGGING"
       value: False
     - name: "AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID"
-      value: 
+      value:
     - name: "AIRFLOW__LOGGING__DELETE_LOCAL_LOGS"
       value:  False
     - name: "AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER"
-      value:  
+      value:
     # SMTP
     - name: "AIRFLOW__SMTP__SMTP_HOST"
       value: ""
@@ -39,6 +39,19 @@ values_files:
       value: "false"
     - name: "AIRFLOW__SMTP__SMTP_SSL"
       value: "false"
+    # Apache polaris x MinIO - Nubonyxia context
+    - name: "SSL_CERT_FILE"
+      value: "/usr/local/share/ca-certificates/customCA.crt"
+    - name: "REQUESTS_CA_BUNDLE"
+      value: "/usr/local/share/ca-certificates/customCA.crt"
+    - name: "AWS_CA_BUNDLE"
+      value: "/usr/local/share/ca-certificates/customCA.crt"
+    - name: "CURL_CA_BUNDLE"
+      value: "/usr/local/share/ca-certificates/customCA.crt"
+    - name: "AWS_ACCESS_KEY_ID"
+      value:
+    - name: "AWS_SECRET_ACCESS_KEY"
+      value:
 
   # Ingress configuration - Airflow 3+
   ingress:
@@ -65,12 +78,12 @@ values_files:
   data:
     # Otherwise pass connection values in
     metadataConnection:
-      user: 
-      pass: 
+      user:
+      pass:
       protocol: postgresql
-      host: 
+      host:
       port: 5432
-      db: 
+      db:
 
   # Airflow webserver settings
   webserver:
@@ -79,11 +92,11 @@ values_files:
     defaultUser:
       enabled: true
       role: Admin
-      username: 
-      email: 
-      firstName: 
-      lastName: 
-      password: 
+      username:
+      email:
+      firstName:
+      lastName:
+      password:
 
   # Git sync
   dags:
