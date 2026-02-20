@@ -40,14 +40,6 @@ values_files:
     - name: "AIRFLOW__SMTP__SMTP_SSL"
       value: "false"
     # Apache polaris x MinIO - Nubonyxia context
-    - name: "SSL_CERT_FILE"
-      value: "/usr/local/share/ca-certificates/customCA.crt"
-    - name: "REQUESTS_CA_BUNDLE"
-      value: "/usr/local/share/ca-certificates/customCA.crt"
-    - name: "AWS_CA_BUNDLE"
-      value: "/usr/local/share/ca-certificates/customCA.crt"
-    - name: "CURL_CA_BUNDLE"
-      value: "/usr/local/share/ca-certificates/customCA.crt"
     - name: "AWS_ACCESS_KEY_ID"
       value:
     - name: "AWS_SECRET_ACCESS_KEY"
