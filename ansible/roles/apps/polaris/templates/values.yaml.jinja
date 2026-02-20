@@ -1,5 +1,18 @@
 #jinja2:variable_start_string:'<<' , variable_end_string:'>>'
 
+image:
+  # -- The image repository to pull from.
+  repository: ghcr.io/ytihianine/apache-polaris-custom
+  # @schema enum: [Always, IfNotPresent, Never]
+  # -- The image pull policy.
+  pullPolicy: Always
+  # -- The image tag.
+  tag: "latest"
+  # -- The path to the directory where the application.properties file, and other configuration
+  # files, if any, should be mounted.
+  configDir: /deployments/config
+
+
 serviceMonitor:
   # -- Specifies whether a ServiceMonitor for Prometheus operator should be created.
   enabled: << values.serviceMonitor.enabled >>
@@ -32,6 +45,18 @@ storage:
     awsAccessKeyId: awsAccessKeyId
     # -- The key in the secret to pull the AWS secret access key from. Only required when using AWS.
     awsSecretAccessKey: awsSecretAccessKey
+
+extraEnv:
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: << secret.s3.name >>
+        key: awsAccessKeyId
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: << secret.s3.name >>
+        key: awsSecretAccessKey
 
 
 ingress:
