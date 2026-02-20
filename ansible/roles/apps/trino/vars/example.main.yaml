@@ -1,0 +1,23 @@
+k8s:
+  namespace: to_define
+
+helm:
+  repo_name: trino
+  repo_url: https://trinodb.github.io/charts
+  chart_name: trino
+  release_name: trino_release
+
+values_files:
+  # Path where jinja template is rendered
+  tmp_path: /tmp/trino_values.yaml
+
+
+  ingress:
+    enabled: true
+    className: ""
+    hosts: []
+      # Example - templated
+      # - host: workflow.example.com
+      #   paths:
+      #     - path: /
+      #       pathType: Prefix
