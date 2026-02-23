@@ -12,6 +12,10 @@ image:
   # files, if any, should be mounted.
   configDir: /deployments/config
 
+advancedConfig:
+  polaris:
+    features:
+      DROP_WITH_PURGE_ENABLED: true
 
 serviceMonitor:
   # -- Specifies whether a ServiceMonitor for Prometheus operator should be created.
