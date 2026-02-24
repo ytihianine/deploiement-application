@@ -1,30 +1,26 @@
+image:
+  # -- Image registry, defaults to empty, which results in DockerHub usage
+  registry: "ghcr.io"
+  # -- Repository location of the Trino image, typically `organization/imagename`
+  repository: ytihianine/trino-custom
+  # -- Image tag, defaults to the Trino release version specified as `appVersion` from Chart.yaml
+  tag: "latest"
+  # -- Optional digest value of the image specified as `sha256:abcd...`. A specified value overrides `tag`.
+  digest: ""
+  # -- When true, only the content in `repository` is used as image reference
+  useRepositoryAsSoleImageReference: false
+  pullPolicy: Always
 
-
-server:
-  exchangeManager:
-    name: "filesystem"
-    baseDir:
-      - "s3://bucket-name"
-additionalExchangeManagerProperties:
-  - exchange.s3.region=us-east-1
-  - exchange.s3.endpoint=
-  - exchange.s3.aws-access-key=
-  - exchange.s3.aws-secret-key=
 
 additionalConfigProperties:
   - http-server.process-forwarded=IGNORE
 
 catalogs:
-  objectstore: |
-    connector.name=iceberg
-    iceberg.catalog.type=rest
+{% for catalog_name, catalog_config in values_files.catalogs.items() %}
+  {{ catalog_name }}: |
+    {{ catalog_config | replace('\n', '\n    ') | trim }}
+{% endfor %}
+
 
 ingress:
-  enabled: true
-  className: "nginx"
-  annotations: {}
-  hosts:
-    - host: custom.lab.incubateur.finances.rie.gouv.fr
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  {{ values_files.ingress | to_nice_yaml(indent=2) | indent(2) }}
