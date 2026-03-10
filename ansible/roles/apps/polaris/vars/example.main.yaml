@@ -30,6 +30,12 @@ values:
   # Path where jinja template is rendered
   tmp_path: /tmp/polaris_values.yaml
 
+  image:
+    # -- The image repository to pull from.
+    repository: ghcr.io/ytihianine/apache-polaris-custom
+    # -- The image tag.
+    tag: "latest"
+
   serviceMonitor:
     enabled: false
 

@@ -2,12 +2,12 @@
 
 image:
   # -- The image repository to pull from.
-  repository: ghcr.io/ytihianine/apache-polaris-custom
+  repository: << values.image.repository >>
   # @schema enum: [Always, IfNotPresent, Never]
   # -- The image pull policy.
   pullPolicy: Always
   # -- The image tag.
-  tag: "latest"
+  tag: << values.image.tag >>
   # -- The path to the directory where the application.properties file, and other configuration
   # files, if any, should be mounted.
   configDir: /deployments/config
