@@ -21,6 +21,17 @@ Depuis la racine du projet:
 Manuellement: `ansible-playbook -i localhost ansible/playbooks/chartsgouv.yaml`
 Via le CLI: 
 
+4. Supprimer le déploiement
+
+Depuis votre namespace
+```
+helm delete superset-release-name
+```
+
+Depuis votre base postgresql
+```
+DROP DATABASE superset_config WITH(force);
+```
 
 ### Troubleshooting
 
@@ -53,15 +64,19 @@ Pré-requis:
 1. Créer la base de données
 Depuis votre service postgresql, exécuter la commande `CREATE DATABASE polaris_config;`.
 
-2. Exécuter le playbook
+2. Configurer les fichiers de configuration
+
+Dans le dossier `ansible/roles/app/chartsgouv`, des fichiers sont disponibles pour être configurés. Notamment les fichiers `files/superset_config_override.py` et le fichier `vars/main.yaml`.
+
+3. Exécuter le playbook
 Depuis la racine du projet:  
 Manuellement: `ansible-playbook -i localhost ansible/playbooks/polaris.yaml`
 Via le CLI: 
 
-3. Initialiser le catalog
+4. Initialiser le catalog
 Exécuter le script suivant en le complétant de vos informations => [script-init-polaris-catalog](https://forge.dgfip.finances.rie.gouv.fr/sg/dsci/lt/traitement-des-donnees/-/tree/main/scripts/catalogs?ref_type=heads)
 
-4. Supprimer le déploiement
+5. Supprimer le déploiement
 
 Depuis votre namespace
 ```
