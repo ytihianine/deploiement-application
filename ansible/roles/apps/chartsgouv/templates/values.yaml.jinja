@@ -18,7 +18,7 @@ ingress:
 image:
   repository: << values_files.image.repository >>
   tag: << values_files.image.tag >>
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 {# extraVolumes:
   - name: << configmap.name >>
@@ -31,14 +31,10 @@ extraVolumeMounts:
 
 bootstrapScript: |
   #!/bin/bash
-  apt update && apt install -y gcc libpq-dev python3-dev pkg-config
-
-  if command -v uv > /dev/null 2>&1; then
-    uv pip install --no-cache-dir -r psycopg2-binary
-  else
-    pip install --no-cache-dir -r psycopg2-binary
-  fi;
-
+  # export HTTP_PROXY="http://172.16.0.53:3128"
+  # export HTTPS_PROXY="http://172.16.0.53:3128"
+  # apt-get update && apt-get install -y build-essential
+  # uv pip install psycopg2-binary &&\
   if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
 
 init:
