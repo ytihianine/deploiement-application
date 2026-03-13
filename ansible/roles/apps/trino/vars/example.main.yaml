@@ -5,6 +5,7 @@ helm:
   repo_name: trino
   repo_url: https://trinodb.github.io/charts
   chart_name: trino
+  chart_version: 1.42.1
   release_name: trino_release
 
 values_files:
