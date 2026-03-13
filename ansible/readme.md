@@ -2,6 +2,38 @@
 
 Avant de déployer un playbook, il est nécessaire de dupliquer les fichiers de configurations avec la commande `make duplicate`.
 
+
+## Apache Airflow
+
+Pré-requis:
+- Apache Superset: v3+
+- PostgreSQL: v16+
+
+1. Créer la base de données
+
+Depuis votre service postgresql, exécuter la commande `CREATE DATABASE airflow_config;`.
+
+2. Configurer les fichiers de configuration
+
+Dans le dossier `ansible/roles/app/airflow`, des fichiers sont disponibles pour être configurés, notamment le fichier `vars/main.yaml`.
+
+3. Exécuter le playbook
+Depuis la racine du projet:  
+Manuellement: `ansible-playbook -i localhost ansible/playbooks/airflow.yaml`
+Via le CLI: 
+
+4. Supprimer le déploiement
+
+Depuis votre namespace
+```
+helm delete airflow-release-name
+```
+
+Depuis votre base postgresql
+```
+DROP DATABASE superseairflow_configt_config WITH(force);
+```
+
 ## Apache Superset
 
 Pré-requis:
@@ -56,6 +88,40 @@ bootstrapScript: |
 
 
 ## Apache polaris
+
+Pré-requis:
+- Apache Polaris: v1.3.0-incubating
+- PostgreSQL: v16+
+
+1. Créer la base de données
+Depuis votre service postgresql, exécuter la commande `CREATE DATABASE polaris_config;`.
+
+2. Configurer les fichiers de configuration
+
+Dans le dossier `ansible/roles/app/chartsgouv`, des fichiers sont disponibles pour être configurés. Notamment les fichiers `files/superset_config_override.py` et le fichier `vars/main.yaml`.
+
+3. Exécuter le playbook
+Depuis la racine du projet:  
+Manuellement: `ansible-playbook -i localhost ansible/playbooks/polaris.yaml`
+Via le CLI: 
+
+4. Initialiser le catalog
+Exécuter le script suivant en le complétant de vos informations => [script-init-polaris-catalog](https://forge.dgfip.finances.rie.gouv.fr/sg/dsci/lt/traitement-des-donnees/-/tree/main/scripts/catalogs?ref_type=heads)
+
+5. Supprimer le déploiement
+
+Depuis votre namespace
+```
+helm delete polaris-release-name
+```
+
+Depuis votre base postgresql
+```
+DROP DATABASE polaris_config WITH(force);
+```
+
+
+## Trino
 
 Pré-requis:
 - Apache Polaris: v1.3.0-incubating
