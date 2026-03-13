@@ -11,14 +11,8 @@ Ce projet est une suite de playbooks Ansible permettant de déployer des applica
 ├── ansible/
 │   ├── playbooks.yaml           # Configuration des playbooks
 │   ├── ansible.cfg              # Configuration Ansible
-│   ├── readme.md              # Documentation des playbooks
+│   ├── readme.md                # Documentation des playbooks
 │   ├── playbooks/               # Répertoire des playbooks
-│   │   ├── airflow.yaml
-│   │   ├── chartsgouv.yaml
-│   │   ├── n8n.yaml
-│   │   ├── postgresql-service.yaml
-│   │   ├── postgresql-users.yaml
-│   │   ├── postgresql-restore.yaml
 │   └── roles/                   # Rôles Ansible
 ├── test/              # Dossier de tests du CLI
 ├── cli.py           # CLI principal
@@ -33,6 +27,8 @@ Ce projet est une suite de playbooks Ansible permettant de déployer des applica
 - Un service VScode lancé dans le cluster Kubernetes
 
 ## Applications
+
+Pour déployer les playbooks, merci d'utiliser cette [documentation](ansible/readme.md)
 
 Les applications disponibles sont:
 - Airflow
@@ -60,13 +56,6 @@ Un outil en ligne de commande moderne et puissant pour gérer vos playbooks Ansi
 
 ### Lister les playbooks disponibles
 
-```bash
-./ansible_cli.py list
-```
-
-Avec détails complets :
-```bash
-./ansible_cli.py list -v
 ```
 
 ### Dupliquer les fichiers d'exemple
@@ -78,27 +67,6 @@ Copie automatiquement tous les fichiers `example.main.yaml` vers `main.yaml` :
 
 ### Exécuter un playbook
 
-Un seul playbook :
-```bash
-./ansible_cli.py run postgresql-service
-```
-
-Plusieurs playbooks (séquentiel) :
-```bash
-./ansible_cli.py run postgresql-service airflow chartsgouv
-```
-
-### Exécution parallèle
-
-Lancer plusieurs playbooks en parallèle :
-```bash
-./ansible_cli.py run airflow n8n chartsgouv --parallel
-```
-
-Avec contrôle du nombre de workers :
-```bash
-./ansible_cli.py run airflow n8n --parallel --max-workers 2
-```
 
 ### Exécuter tous les playbooks
 
