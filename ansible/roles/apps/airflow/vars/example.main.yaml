@@ -8,6 +8,14 @@ helm:
   chart_name: airflow
   release_name:
 
+secret:
+  git_credentials:
+    dest: /tmp/airflow_git_credentials.yaml
+    # If your git repository is private, you can create a Kubernetes secret with your git credentials and specify its name here.
+    # The secret should have the keys `GITSYNC_USERNAME` and `GITSYNC_PASSWORD` containing the base64-encoded username and password, respectively.
+    git_username:
+    git_password:
+
 values_files:
   # Path where jinja template is rendered
   tmp_path: /tmp/airflow_values.yaml
@@ -101,4 +109,7 @@ values_files:
       depth: 1
       maxFailures: 1
       # subPath:
-      period: 20s
+      period: 30s
+
+      # If your git repository is private
+      credentialsSecret: git-credentials

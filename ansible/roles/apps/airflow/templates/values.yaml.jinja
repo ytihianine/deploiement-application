@@ -151,10 +151,6 @@ dags:
   # Where dags volume will be mounted. Works for both persistence and gitSync.
   # If not specified, dags mount path will be set to $AIRFLOW_HOME/dags
   mountPath: ~
-  persistence:
-    # Enable persistent volume for storing dags
-    enabled: true
-    size: 1Gi
 
   gitSync:
     enabled: << values_files.dags.gitSync.enabled >>
@@ -174,12 +170,8 @@ dags:
     # should be "" if dags are at repo root
     subPath: << values_files.dags.gitSync.subPath | default('') | tojson >>
     period: << values_files.dags.gitSync.period >>
-    wait: ~
-    # add variables from secret into gitSync containers, such proxy-config
-    envFrom: ~
-    # envFrom: |
-    #   - secretRef:
-    #       name: 'proxy-config'
+
+    credentialsSecret: << values_files.dags.gitSync.credentialsSecret >>
 
 logs:
   # Configuration for empty dir volume (if logs.persistence.enabled == false)
