@@ -20,6 +20,13 @@ values_files:
   # Path where jinja template is rendered
   tmp_path: /tmp/airflow_values.yaml
 
+  airflowVersion: 3.1.8
+
+  images:
+    airflow:
+      repository: ghcr.io/ytihianine/traitement-de-donnees
+      tag: 3.1.8-5f06578
+
   # SAVE THOSE VALUES
   fernetKey:
   webserverSecretKey:  # Airflow 2+
@@ -47,11 +54,17 @@ values_files:
       value: "false"
     - name: "AIRFLOW__SMTP__SMTP_SSL"
       value: "false"
+    # Proxy - Those values are read in constants.py file
+    - name: "AIRFLOW_PROXY"
+      value: ""
+    - name: "AIRFLOW_USER_AGENT"
+      value: ""
     # Apache polaris x MinIO - Nubonyxia context
     - name: "AWS_ACCESS_KEY_ID"
       value:
     - name: "AWS_SECRET_ACCESS_KEY"
       value:
+
 
   # Ingress configuration - Airflow 3+
   ingress:

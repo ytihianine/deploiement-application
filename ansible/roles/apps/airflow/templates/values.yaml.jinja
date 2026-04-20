@@ -4,19 +4,19 @@
 defaultAirflowRepository: apache/airflow
 
 # Default airflow tag to deploy
-defaultAirflowTag: "<< values_files.image.tag >>"
+defaultAirflowTag: "<< values_files.airflowVersion >>"
 
 # Default airflow digest. If specified, it takes precedence over tag
 defaultAirflowDigest: ~
 
 # Airflow version (Used to make some decisions based on Airflow Version being deployed)
-airflowVersion: "<< values_files.image.tag >>"
+airflowVersion: "<< values_files.airflowVersion >>"
 
 # Images
 images:
   airflow:
-    repository: ghcr.io/ytihianine/traitement-de-donnees
-    tag: << values_files.image.tag >>
+    repository: << values_files.images.airflow.repository >>
+    tag: << values_files.images.airflow.tag >>
     # Specifying digest takes precedence over tag.
     # digest:
     pullPolicy: Always
