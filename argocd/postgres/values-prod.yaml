@@ -1,0 +1,8 @@
+
+version:
+  # -- PostgreSQL major version to use
+  postgresql: "17"
+
+cluster:
+  # -- Number of instances
+  instances: 1
