@@ -1,0 +1,11 @@
+k8s:
+  namespace: argocd
+
+
+helm:
+  # check official links (https://github.com/argoproj/argo-helm)
+  repo_name: argo
+  repo_url: https://argoproj.github.io/argo-helm
+  chart_name: argo-cd
+  release_name: argocd
+
