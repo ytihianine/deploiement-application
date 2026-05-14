@@ -1,0 +1,77 @@
+superset:
+
+  onyxia:
+    friendlyName: superset
+    owner: custom
+    share: true
+    userDefinedValues: ""
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      # The hostname for the web Ingress (templated)
+      - superset-mef.lab.sspcloud.fr
+
+  image:
+    repository: docker pull ghcr.io/ytihianine/apache-superset-custom:e025702
+    tag: e025702
+    pullPolicy: IfNotPresent
+
+  # extraVolumes:
+  #   - name: << configmap.name >>
+  #     configMap:
+  #       name: << configmap.name >>
+
+  # extraVolumeMounts:
+  #   - name: << configmap.name >>
+  #     mountPath: /app/pythonpath/custom_config
+
+  bootstrapScript: |
+    if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
+
+  init:
+    adminUser:
+      # Override
+      username: superset_admin
+      password: superset_admin
+  extraSecretEnv:
+    SUPERSET_SECRET_KEY: supersetSecretKey
+  supersetNode:
+    replicas:
+      enabled: true
+      replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+      # targetMemoryUtilizationPercentage: 80
+    connections:
+      db_host: postgresql-prod
+      db_port: 5432
+      db_user: postgres
+      db_pass: postgres
+      db_name: superset_config
+  ## Set to false if bringing your own PostgreSQL.
+  postgresql:
+    enabled: false
+  # Superset Celery worker configuration
+  supersetWorker:
+    replicas:
+      enabled: true
+      replicaCount: 1
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+      # targetMemoryUtilizationPercentage: 80
+    # -- Sets the [pod disruption budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) for supersetWorker pods
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 12288Mi
+      requests:
+        cpu: 2000m
+        memory: 6144Mi
