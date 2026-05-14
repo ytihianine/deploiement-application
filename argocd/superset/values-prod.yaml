@@ -19,8 +19,7 @@ superset:
     pullPolicy: IfNotPresent
 
   # -- Same as above but the values are files
-  configOverridesFiles:
-    custom_config: superset_config_override.py
+  configOverridesFiles: {}
 
   bootstrapScript: |
     #!/bin/bash
