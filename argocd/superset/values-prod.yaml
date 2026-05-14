@@ -51,9 +51,12 @@ superset:
       - "-c"
       - ". {{ .Values.configMountPath }}/superset_bootstrap.sh; . {{ .Values.configMountPath }}/superset_init.sh"
     enabled: true
+    useHelmHooks: false
+    applyCustomEnv: false
     jobAnnotations:
       "helm.sh/hook": post-install,post-upgrade
       "helm.sh/hook-delete-policy": "before-hook-creation"
+      "argocd.argoproj.io/hook": Sync
     loadExamples: false
     createAdmin: true
     adminUser:
