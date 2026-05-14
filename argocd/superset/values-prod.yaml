@@ -14,7 +14,7 @@ superset:
       - superset-mef.lab.sspcloud.fr
 
   image:
-    repository: docker pull ghcr.io/ytihianine/apache-superset-custom
+    repository: ghcr.io/ytihianine/apache-superset-custom
     tag: e025702
     pullPolicy: IfNotPresent
 
