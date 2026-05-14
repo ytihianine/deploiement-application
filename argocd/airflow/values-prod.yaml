@@ -103,7 +103,7 @@ airflow:
     # Create initial user.
     defaultUser:
       enabled: true
-      role: admin
+      role: Admin
       username: airflow_admin
       email: mail@mail.fr
       firstName: admin
