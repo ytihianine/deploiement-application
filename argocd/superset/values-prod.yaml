@@ -18,14 +18,9 @@ superset:
     tag: e025702
     pullPolicy: IfNotPresent
 
-  # extraVolumes:
-  #   - name: << configmap.name >>
-  #     configMap:
-  #       name: << configmap.name >>
-
-  # extraVolumeMounts:
-  #   - name: << configmap.name >>
-  #     mountPath: /app/pythonpath/custom_config
+  # -- Same as above but the values are files
+  configOverridesFiles:
+    custom_config: superset_config_override.py
 
   bootstrapScript: |
     #!/bin/bash
