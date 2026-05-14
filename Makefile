@@ -1,8 +1,7 @@
 # Makefile pour faciliter l'utilisation du CLI Ansible
-.PHONY: help install list duplicate run-all test clean
+.PHONY: help install clean
 
 # Variables
-CLI = python3 cli.py
 VENV = env
 
 help: ## Affiche cette aide
@@ -28,33 +27,8 @@ setup-env: install-packages ## Installe les dépendances et les pre-commits
 	# Installer les pre-commits
 	pre-commit install
 
-list: ## Liste tous les playbooks disponibles
-	$(CLI) ls
-
-list-verbose: ## Liste les playbooks avec détails complets
-	$(CLI) ls -v
-
 duplicate: ## Duplique les fichiers example.main.yaml vers main.yaml
-	$(CLI) duplicate
-
-# Exécution des playbooks
-run: ## Déploie un playbook spécifique (ex: make run polaris, make run polaris postgresql-service)
-	$(CLI) run $(filter-out $@,$(MAKECMDGOALS))
-
-run-all: ## Déploie tous les playbooks en séquentiel
-	$(CLI) run --all
-
-run-all-parallel: ## Déploie tous les playbooks en parallèle
-	$(CLI) run --all --parallel
-
-# Commandes de test
-dry-run-all: ## Teste tous les playbooks en mode dry-run
-	$(CLI) run --all --dry-run
-
-test: dry-run-all ## Alias pour dry-run-all
-
-# Déploiement complet
-deploy: duplicate run-all ## Setup complet: duplique les fichiers et déploie tout
+	echo "Needs to be refactored"
 
 # Nettoyage
 clean: ## Nettoie les fichiers temporaires Python
