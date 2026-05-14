@@ -6,6 +6,6 @@ version: 0.1.0
 appVersion: "1.0"
 
 dependencies:
-- name: apache-airflow
+- name: airflow
   version: 1.21.0
   repository: https://airflow.apache.org

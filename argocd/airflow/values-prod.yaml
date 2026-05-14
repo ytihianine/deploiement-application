@@ -1,4 +1,4 @@
-apache-airflow:
+airflow:
   # Must be set for ArgoCD deployment
   createUserJob:
     useHelmHooks: false
