@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Install ArgoCD on Kubernetes
+  hosts: localhost
   connection: local
   gather_facts: no
   # become: yes
