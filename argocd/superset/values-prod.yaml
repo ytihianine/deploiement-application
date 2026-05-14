@@ -28,13 +28,103 @@ superset:
   #     mountPath: /app/pythonpath/custom_config
 
   bootstrapScript: |
+    #!/bin/bash
     if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
 
   init:
+    # Configure resources
+    # Warning: fab command consumes a lot of ram and can
+    # cause the process to be killed due to OOM if it exceeds limit
+    # Make sure you are giving a strong password for the admin user creation( else make sure you are changing after setup)
+    # Also change the admin email to your own custom email.
+    resources: {}
+      # limits:
+      #   cpu:
+      #   memory:
+      # requests:
+      #   cpu:
+      #   memory:
+    # -- Command
+    # @default -- a `superset_init.sh` command
+    command:
+      - "/bin/sh"
+      - "-c"
+      - ". {{ .Values.configMountPath }}/superset_bootstrap.sh; . {{ .Values.configMountPath }}/superset_init.sh"
+    enabled: true
+    jobAnnotations:
+      "helm.sh/hook": post-install,post-upgrade
+      "helm.sh/hook-delete-policy": "before-hook-creation"
+    loadExamples: false
+    createAdmin: true
     adminUser:
-      # Override
       username: superset_admin
+      firstname: Superset
+      lastname: Admin
+      email: admin@superset.com
       password: superset_admin
+    # -- List of initContainers
+    # @default -- a container waiting for postgres
+    initContainers:
+      - name: wait-for-postgres
+        image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+        imagePullPolicy: "{{ .Values.initImage.pullPolicy }}"
+        envFrom:
+          - secretRef:
+              name: "{{ tpl .Values.envFromSecret . }}"
+        command:
+          - /bin/sh
+          - -c
+          - dockerize -wait "tcp://$DB_HOST:$DB_PORT" -timeout 120s
+        resources:
+          limits:
+            memory: "256Mi"
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+    # -- A Superset init script
+    # @default -- a script to create admin user and initialize roles
+    initscript: |-
+      #!/bin/sh
+      set -eu
+      echo "Upgrading DB schema..."
+      superset db upgrade
+      echo "Initializing roles..."
+      superset init
+      {{ if .Values.init.createAdmin }}
+      echo "Creating admin user..."
+      superset fab create-admin \
+                      --username {{ .Values.init.adminUser.username }} \
+                      --firstname {{ .Values.init.adminUser.firstname }} \
+                      --lastname {{ .Values.init.adminUser.lastname }} \
+                      --email {{ .Values.init.adminUser.email }} \
+                      --password {{ .Values.init.adminUser.password }} \
+                      || true
+      {{- end }}
+      {{ if .Values.init.loadExamples }}
+      echo "Loading examples..."
+      superset load_examples
+      {{- end }}
+      if [ -f "{{ .Values.extraConfigMountPath }}/import_datasources.yaml" ]; then
+        echo "Importing database connections.... "
+        superset import_datasources -p {{ .Values.extraConfigMountPath }}/import_datasources.yaml
+      fi
+  # -- Launch additional containers into init job pod
+  extraContainers: []
+  ## Annotations to be added to init job pods
+  podAnnotations: {}
+  # Labels to be added to init job pods
+  podLabels: {}
+  podSecurityContext: {}
+  containerSecurityContext: {}
+  ## Tolerations to be added to init job pods
+  tolerations: []
+  ## Affinity to be added to init job pods
+  affinity: {}
+  # -- TopologySpreadConstrains to be added to init job
+  topologySpreadConstraints: []
+  # -- Set priorityClassName for init job pods
+  priorityClassName: ~
+
   extraSecretEnv:
     SUPERSET_SECRET_KEY: supersetSecretKey
   supersetNode:
