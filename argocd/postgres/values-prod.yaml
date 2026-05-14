@@ -8,8 +8,8 @@ postgresql:
     # Password for the "postgres" admin user
     postgresPassword: postgres
     # User to create
-    username: admin
-    password: admin
+    username: pg_admin
+    password: pg_admin
     database: defaultdb
 
   primary:
