@@ -7,7 +7,10 @@
 - name: Render Postgres values file
   ansible.builtin.template:
     src: values.yaml.jinja
-    dest: "{{ values_files.tmp_path }}"
+    dest: "{{ item.tmp_path }}"
+  loop: "{{ databases | default([]) }}"
+  vars:
+    values_files: "{{ item }}"
 
 - name: Deploy Postgres prod config with Helm
   kubernetes.core.helm:

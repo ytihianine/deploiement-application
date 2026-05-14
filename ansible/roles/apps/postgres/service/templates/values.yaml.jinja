@@ -78,7 +78,7 @@ kubeVersion: ""
 nameOverride: ""
 ## @param fullnameOverride String to fully override common.names.fullname template
 ##
-fullnameOverride: ""
+fullnameOverride: << values_files.fullnameOverride | default("") >>
 ## @param namespaceOverride String to fully override common.names.namespace
 ##
 namespaceOverride: ""
@@ -798,7 +798,7 @@ primary:
     volumeName: << values_files.primary.persistence.volumeName >>
     ## @param primary.persistence.existingClaim Name of an existing PVC to use
     ##
-    existingClaim: ""
+    existingClaim: << values_files.primary.persistence.existingClaim | default("") >>
     ## @param primary.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
