@@ -13,6 +13,9 @@ spec:
     helm:
       valueFiles:
         - values-prod.yaml
+      fileParameters:
+        - name: superset.configOverrides.config_override
+          path: superset_config_override.py
   sources: []
   project: default
   syncPolicy:
