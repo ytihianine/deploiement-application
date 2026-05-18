@@ -26,7 +26,7 @@ renovate:
         "endpoint": "https://api.github.com",
         "autodiscover": "true",
         "autodiscoverFilter": ["ytihianine/*"],
-        "dryRun": full,
+        "dryRun": "full"
       }
 
     # Instead of a file system cache, it is highly recommended to use SQLite.
