@@ -12,6 +12,10 @@ renovate:
     # -- Set `true` to use the full image. See <https://docs.renovatebot.com/getting-started/running/#the-full-image>
     useFull: false
 
+  cronjob:
+    # -- Schedules the job to run using cron notation
+    schedule: '*/5 * * * *'  # Every 5 minutes
+
   renovate:
     # -- Custom exiting global renovate config
     existingConfigFile: ''
@@ -21,7 +25,7 @@ renovate:
         "platform": "github",
         "endpoint": "https://api.github.com",
         "autodiscover": "true",
-        "autodiscoverFilter": ["mytihianine/*"]
+        "autodiscoverFilter": ["ytihianine/*"],
         "dryRun": full,
       }
 
