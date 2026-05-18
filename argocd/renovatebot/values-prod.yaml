@@ -15,6 +15,10 @@ renovate:
   cronjob:
     # -- Schedules the job to run using cron notation
     schedule: '*/5 * * * *'  # Every 5 minutes
+    # -- Amount of failed jobs to keep in history
+    failedJobsHistoryLimit: '3'
+    # -- Amount of completed jobs to keep in history
+    successfulJobsHistoryLimit: '3'
 
   renovate:
     # -- Custom exiting global renovate config
