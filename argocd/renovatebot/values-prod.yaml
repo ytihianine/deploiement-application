@@ -14,7 +14,7 @@ renovate:
 
   cronjob:
     # -- Schedules the job to run using cron notation
-    schedule: '*/5 * * * *'  # Every 5 minutes
+    schedule: '0 6 * * *'  # At 06:00 every day
     # -- Amount of failed jobs to keep in history
     failedJobsHistoryLimit: '3'
     # -- Amount of completed jobs to keep in history
@@ -30,7 +30,7 @@ renovate:
         "endpoint": "https://api.github.com",
         "autodiscover": "true",
         "autodiscoverFilter": ["ytihianine/*"],
-        "dryRun": "full"
+        "dryRun": "false"
       }
 
     # Instead of a file system cache, it is highly recommended to use SQLite.
