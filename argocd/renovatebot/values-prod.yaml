@@ -42,6 +42,6 @@ renovate:
     enabled: false
 
   # -- Environment variables to add from existing secrets/configmaps. Uses the keys as variable name
-    envFrom:
-    - secretRef:
-        name: renovatebot-secret
+  envFrom:
+  - secretRef:
+      name: renovatebot-secret
