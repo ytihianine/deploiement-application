@@ -28,7 +28,8 @@ renovate:
       {
         "platform": "github",
         "endpoint": "https://api.github.com",
-        "autodiscover": "true",
+        "gitAuthor": "Renovate Bot <renovate[bot]@users.noreply.github.com>",
+        "autodiscover": true,
         "autodiscoverFilter": ["ytihianine/*"],
         "dryRun": null,
         "rebaseWhen": "behind-base-branch",
