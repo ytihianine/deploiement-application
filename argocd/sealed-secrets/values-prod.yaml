@@ -29,7 +29,7 @@ sealed-secrets:
   serviceAccount:
     ## @param serviceAccount.create Specifies whether a ServiceAccount should be created
     ##
-    create: false
+    create: true
 
   kubernetes:
     enabled: true
