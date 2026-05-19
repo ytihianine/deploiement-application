@@ -12,14 +12,24 @@ Ce guide fournit tous les éléments pour déployer la suite donnée avec ArgoCD
 ## Déploiement
 
 Etapes:
-- Déployer ArgoCD avec Ansible
-- Déployer une base de données PostgreSQL pour les config des applications
-- Déployer une base de données PostgreSQL pour les données des applications
-- Créer les utilisateurs des bases de données
-- Déployer Superset
-- Déployer Airflow
+- [ ] Déployer ArgoCD
+- [X] Installer argocd-cli
+- [ ] Installer kubeseal-cli
+- [X] Déployer sealsecret
+- [X] Déployer RenovateBot
+- [X] Déployer une base de données pour la configuration des applications
+- [X] Déployer une base de données pour les données des applications
+- [ ] Créer les utilisateurs des bases de données
+- [X] Déployer Superset
+- [X] Déployer Airflow
+- [ ] Déployer Apache Polaris
+- [ ] Déployer Trino
 
 ### Déployer ArgoCD avec Ansible
+### Déployer le sealsecret
+### Déployer le RenovateBot
+Pré-requis:
+- Token git avec les permissions suivantes: TO_DEFINE
 ### Déployer PostgreSql pour les configurations
 ### Déployer PostgreSql pour les données
 ### Créer les utilisateurs des bases de données
