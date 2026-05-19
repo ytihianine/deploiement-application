@@ -31,12 +31,34 @@ renovate:
         "autodiscover": "true",
         "autodiscoverFilter": ["ytihianine/*"],
         "dryRun": null,
-        "rebaseWhen": "behind-base-branch"
+        "rebaseWhen": "behind-base-branch",
         "requireConfig": "optional",
         "onboardingConfig": {
           "$schema": "https://docs.renovatebot.com/renovate-schema.json",
           "extends": ["config:recommended"]
-        }
+        },
+        "packageRules": [
+          {
+            "matchManagers": ["pip_requirements", "pipenv", "poetry"],
+            "groupName": "python dependencies"
+          },
+          {
+            "matchManagers": ["npm", "yarn", "pnpm"],
+            "groupName": "node dependencies"
+          },
+          {
+            "matchManagers": ["dockerfile", "docker-compose"],
+            "groupName": "docker dependencies"
+          },
+          {
+            "matchManagers": ["github-actions"],
+            "groupName": "github actions"
+          },
+          {
+            "matchManagers": ["helm-values", "helmv3"],
+            "groupName": "helm dependencies"
+          }
+        ]
       }
 
     # Instead of a file system cache, it is highly recommended to use SQLite.
