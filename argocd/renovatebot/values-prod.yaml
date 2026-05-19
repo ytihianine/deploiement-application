@@ -30,7 +30,7 @@ renovate:
         "endpoint": "https://api.github.com",
         "autodiscover": "true",
         "autodiscoverFilter": ["ytihianine/*"],
-        "dryRun": "false",
+        "dryRun": null,
         "requireConfig": "optional",
         "onboardingConfig": {
           "$schema": "https://docs.renovatebot.com/renovate-schema.json",
