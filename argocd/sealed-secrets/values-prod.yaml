@@ -17,6 +17,10 @@ sealed-secrets:
     ##
     pullSecrets: []
 
+  ## @param namespace Namespace where to deploy the Sealed Secrets controller
+  ##
+  namespace: "projet-mef-sg-dsci"
+
   ## RBAC configuration
   ##
   rbac:
