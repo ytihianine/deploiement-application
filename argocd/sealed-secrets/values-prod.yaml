@@ -23,3 +23,10 @@ sealed-secrets:
     ## @param rbac.create Specifies whether RBAC resources should be created
     ##
     create: false
+
+  ## ServiceAccount configuration
+  ##
+  serviceAccount:
+    ## @param serviceAccount.create Specifies whether a ServiceAccount should be created
+    ##
+    create: false
