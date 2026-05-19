@@ -16,3 +16,10 @@ sealed-secrets:
     ##   - myRegistryKeySecretName
     ##
     pullSecrets: []
+
+  ## RBAC configuration
+  ##
+  rbac:
+    ## @param rbac.create Specifies whether RBAC resources should be created
+    ##
+    create: false
