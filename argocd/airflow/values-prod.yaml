@@ -30,6 +30,10 @@ airflow:
       # digest:
       pullPolicy: Always
 
+  extraEnvFrom: |
+    - secretRef:
+        name: 'airflow-config'
+
   # Ingress configuration
   ingress:
     # Configs for the Ingress of the API Server - Airflow 3+
