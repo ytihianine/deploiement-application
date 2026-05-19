@@ -30,7 +30,12 @@ renovate:
         "endpoint": "https://api.github.com",
         "autodiscover": "true",
         "autodiscoverFilter": ["ytihianine/*"],
-        "dryRun": "false"
+        "dryRun": "false",
+        "requireConfig": "optional",
+        "onboardingConfig": {
+          "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+          "extends": ["config:recommended"]
+        }
       }
 
     # Instead of a file system cache, it is highly recommended to use SQLite.
