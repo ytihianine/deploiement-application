@@ -1,5 +1,5 @@
 apiVersion: v2
-name: postgres-prod
+name: db-data-prod
 description: An Umbrella Helm chart
 type: application
 version: 0.1.0
