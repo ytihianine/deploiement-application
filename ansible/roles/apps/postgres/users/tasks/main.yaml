@@ -1,63 +1,68 @@
 ---
 # Tâches pour créer et gérer les utilisateurs PostgreSQL avec leurs droits
 
-- name: Create PostgreSQL users
-  community.postgresql.postgresql_user:
-    login_host: "{{ database.auth.login_host }}"
-    login_user: "{{ database.auth.login_user }}"
-    login_password: "{{ database.auth.login_password }}"
-    login_db: "{{ item.login_db | default(database.auth.login_db) }}"
-    name: "{{ item.name }}"
-    password: "{{ item.password }}"
-    state: present
-    encrypted: true
-  loop: "{{ users_config.database.users | default([]) }}"
-  no_log: true  # Ne pas afficher les mots de passe dans les logs
+- name: Loop Db databases
+  ansible.builtin.debug:
+    msg: "login_host={{ item.0.auth.host }} login_db={{ item.0.auth.db }} login_user={{ item.0.auth.user }} // user={{ item.1.name }}"
+  loop: "{{ databases | subelements('users') }}"
 
-- name: Grant database privileges to users
-  community.postgresql.postgresql_privs:
-    login_host: "{{ database.auth.login_host }}"
-    login_user: "{{ database.auth.login_user }}"
-    login_password: "{{ database.auth.login_password }}"
-    login_db: "{{ database.auth.login_db }}"
-    state: present
-    privs: "{{ item.1 }}"
-    type: database
-  loop: "{{ database.users | default([]) | subelements('db_privileges', skip_missing=True) }}"
+# - name: Create PostgreSQL users
+#   community.postgresql.postgresql_user:
+#     login_host: "{{ database.auth.login_host }}"
+#     login_user: "{{ database.auth.login_user }}"
+#     login_password: "{{ database.auth.login_password }}"
+#     login_db: "{{ item.login_db | default(database.auth.login_db) }}"
+#     name: "{{ item.name }}"
+#     password: "{{ item.password }}"
+#     state: present
+#     encrypted: true
+#   loop: "{{ users_config.database.users | default([]) }}"
+#   no_log: true  # Ne pas afficher les mots de passe dans les logs
 
-- name: Grant schema privileges to users
-  community.postgresql.postgresql_privs:
-    login_host: "{{ database.auth.login_host }}"
-    login_user: "{{ database.auth.login_user }}"
-    login_password: "{{ database.auth.login_password }}"
-    login_db: "{{ database.auth.login_db }}"
-    state: present
-    type: schema
-    privs: "{{ item.1 }}"
-  loop: "{{ database.users | default([]) | subelements('schema_privileges', skip_missing=True) }}"
+# - name: Grant database privileges to users
+#   community.postgresql.postgresql_privs:
+#     login_host: "{{ database.auth.login_host }}"
+#     login_user: "{{ database.auth.login_user }}"
+#     login_password: "{{ database.auth.login_password }}"
+#     login_db: "{{ database.auth.login_db }}"
+#     state: present
+#     privs: "{{ item.1 }}"
+#     type: database
+#   loop: "{{ database.users | default([]) | subelements('db_privileges', skip_missing=True) }}"
 
-- name: Grant table privileges to users
-  community.postgresql.postgresql_privs:
-    login_host: "{{ database.auth.login_host }}"
-    login_user: "{{ database.auth.login_user }}"
-    login_password: "{{ database.auth.login_password }}"
-    login_db: "{{ database.auth.login_db }}"
-    state: present
-    schema: not-specified
-    type: table
-    privs: "{{ item.1 }}"
-    objs: ALL_IN_SCHEMA
-  loop: "{{ database.users | default([]) | subelements('table_privileges', skip_missing=True) }}"
+# - name: Grant schema privileges to users
+#   community.postgresql.postgresql_privs:
+#     login_host: "{{ database.auth.login_host }}"
+#     login_user: "{{ database.auth.login_user }}"
+#     login_password: "{{ database.auth.login_password }}"
+#     login_db: "{{ database.auth.login_db }}"
+#     state: present
+#     type: schema
+#     privs: "{{ item.1 }}"
+#   loop: "{{ database.users | default([]) | subelements('schema_privileges', skip_missing=True) }}"
 
-- name: Grant sequence privileges to users
-  community.postgresql.postgresql_privs:
-    login_host: "{{ database.auth.login_host }}"
-    login_user: "{{ database.auth.login_user }}"
-    login_password: "{{ database.auth.login_password }}"
-    login_db: "{{ database.auth.login_db }}"
-    state: present
-    schema: not-specified
-    type: sequence
-    privs: "{{ item.1 }}"
-    objs: ALL_IN_SCHEMA
-  loop: "{{ database.users | default([]) | subelements('sequence_privileges', skip_missing=True) }}"
+# - name: Grant table privileges to users
+#   community.postgresql.postgresql_privs:
+#     login_host: "{{ database.auth.login_host }}"
+#     login_user: "{{ database.auth.login_user }}"
+#     login_password: "{{ database.auth.login_password }}"
+#     login_db: "{{ database.auth.login_db }}"
+#     state: present
+#     schema: not-specified
+#     type: table
+#     privs: "{{ item.1 }}"
+#     objs: ALL_IN_SCHEMA
+#   loop: "{{ database.users | default([]) | subelements('table_privileges', skip_missing=True) }}"
+
+# - name: Grant sequence privileges to users
+#   community.postgresql.postgresql_privs:
+#     login_host: "{{ database.auth.login_host }}"
+#     login_user: "{{ database.auth.login_user }}"
+#     login_password: "{{ database.auth.login_password }}"
+#     login_db: "{{ database.auth.login_db }}"
+#     state: present
+#     schema: not-specified
+#     type: sequence
+#     privs: "{{ item.1 }}"
+#     objs: ALL_IN_SCHEMA
+#   loop: "{{ database.users | default([]) | subelements('sequence_privileges', skip_missing=True) }}"

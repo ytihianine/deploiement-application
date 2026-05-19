@@ -2,81 +2,80 @@
 # Configuration des utilisateurs PostgreSQL et de leurs droits
 # Ce fichier doit être copié en users.yaml et adapté selon vos besoins
 
-database:
+databases:
   # Auth info - Admin user to create other users
-  auth:
-    login_host: postgres
-    login_db: defaultdb
-    login_user: "strong_password_here"
-    login_password: defaultdb
+  - auth:
+      host: postgres
+      db: defaultdb
+      user: "strong_password_here"
+      password: defaultdb
 
-  users:
-    # Utilisateur en lecture seule
-    - name: readonly_user
-      login_db: defaultdb
-      password: "strong_password_here"
-      schema: not-specified
-      db_privileges:
-        - CONNECT
-      schema_privileges:
-        - USAGE
-      table_privileges:
-        - SELECT
-      sequence_privileges:
-        - SELECT
-      default_table_privileges:
-        - SELECT
-      default_sequence_privileges:
-        - SELECT
+    users:
+      # Utilisateur en lecture seule
+      - name: readonly_user
+        database: defaultdb
+        password: "strong_password_here"
+        schema: not-specified
+        db_privileges:
+          - CONNECT
+        schema_privileges:
+          - USAGE
+        table_privileges:
+          - SELECT
+        sequence_privileges:
+          - SELECT
+        default_table_privileges:
+          - SELECT
+        default_sequence_privileges:
+          - SELECT
 
-    # Utilisateur avec droits de lecture/écriture
-    - name: readwrite_user
-      password: "another_strong_password"
-      database: defaultdb
-      schema: not-specified
-      db_privileges:
-        - CONNECT
-      schema_privileges:
-        - USAGE
-        - CREATE
-      table_privileges:
-        - SELECT
-        - INSERT
-        - UPDATE
-        - DELETE
-      sequence_privileges:
-        - SELECT
-        - UPDATE
-        - USAGE
-      default_table_privileges:
-        - SELECT
-        - INSERT
-        - UPDATE
-        - DELETE
-      default_sequence_privileges:
-        - SELECT
-        - UPDATE
-        - USAGE
+      # Utilisateur avec droits de lecture/écriture
+      - name: readwrite_user
+        database: defaultdb
+        password: "another_strong_password"
+        schema: not-specified
+        db_privileges:
+          - CONNECT
+        schema_privileges:
+          - USAGE
+          - CREATE
+        table_privileges:
+          - SELECT
+          - INSERT
+          - UPDATE
+          - DELETE
+        sequence_privileges:
+          - SELECT
+          - UPDATE
+          - USAGE
+        default_table_privileges:
+          - SELECT
+          - INSERT
+          - UPDATE
+          - DELETE
+        default_sequence_privileges:
+          - SELECT
+          - UPDATE
+          - USAGE
 
-    # Utilisateur avec tous les droits
-    - name: admin_user
-      password: "admin_password_here"
-      database: defaultdb
-      schema: not-specified
-      db_privileges:
-        - ALL
-      schema_privileges:
-        - ALL
-      table_privileges:
-        - ALL
-      sequence_privileges:
-        - ALL
-      default_table_privileges:
-        - ALL
-      default_sequence_privileges:
-        - ALL
-      # Appartenance à des rôles (optionnel)
-      roles:
-        - pg_read_all_data
-        - pg_write_all_data
-
+      # Utilisateur avec tous les droits
+      - name: admin_user
+        password: "admin_password_here"
+        database: defaultdb
+        schema: not-specified
+        db_privileges:
+          - ALL
+        schema_privileges:
+          - ALL
+        table_privileges:
+          - ALL
+        sequence_privileges:
+          - ALL
+        default_table_privileges:
+          - ALL
+        default_sequence_privileges:
+          - ALL
+        # Appartenance à des rôles (optionnel)
+        roles:
+          - pg_read_all_data
+          - pg_write_all_data
