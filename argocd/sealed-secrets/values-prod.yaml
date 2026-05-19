@@ -30,6 +30,9 @@ sealed-secrets:
     ## @param serviceAccount.create Specifies whether a ServiceAccount should be created
     ##
     create: true
+    ## @param rbac.clusterRole Specifies whether the Cluster Role resource should be created
+    ##
+    clusterRole: false
 
   kubernetes:
     enabled: true
