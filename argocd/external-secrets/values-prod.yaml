@@ -11,6 +11,8 @@ external-secrets:
     # By default, the distroless image is used.
     flavour: ""
 
+  scopedRBAC: true
+
   installCRDs: false
 
   crds:
