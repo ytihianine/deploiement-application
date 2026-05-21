@@ -16,6 +16,8 @@ external-secrets:
     enabled: false
   webhook:
     create: false
+  certController:
+    create: false
 
   installCRDs: false
 
