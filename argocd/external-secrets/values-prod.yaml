@@ -18,8 +18,8 @@ external-secrets:
   # rbac:
   #   servicebindings:
   #     create: false
-  # webhook:
-  #   create: false
+  webhook:
+    create: false
   # certController:
   #   create: false
 
