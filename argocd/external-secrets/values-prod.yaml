@@ -22,7 +22,7 @@ external-secrets:
   certController:
     create: false
 
-  installCRDs: false
+  installCRDs: true
 
   crds:
     # -- If true, create CRDs for Cluster External Secret. If set to false you must also set processClusterExternalSecret: false.
