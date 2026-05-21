@@ -16,6 +16,9 @@ Etapes:
 - [X] Installer argocd-cli
 - [ ] Installer kubeseal-cli
 - [X] Déployer sealsecret
+- [ ] Déployer external-secrets
+- [ ] Créer le SecretStore
+- [ ] Créer les externals secrets
 - [X] Déployer RenovateBot
 - [X] Déployer une base de données pour la configuration des applications
 - [X] Déployer une base de données pour les données des applications
