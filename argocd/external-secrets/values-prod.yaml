@@ -12,6 +12,7 @@ external-secrets:
     flavour: ""
 
   scopedRBAC: true
+  scopedNamespace: "projet-mef-sg-dsci"
   serviceBindings:
     enabled: false
   rbac:

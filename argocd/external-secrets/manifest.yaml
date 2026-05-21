@@ -11,6 +11,7 @@ spec:
     repoURL: https://github.com/ytihianine/deploiement-application.git
     targetRevision: HEAD
     helm:
+      skipCRDs: true
       valueFiles:
         - values-prod.yaml
   sources: []
