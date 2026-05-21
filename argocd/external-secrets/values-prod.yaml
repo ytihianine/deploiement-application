@@ -20,8 +20,8 @@ external-secrets:
   #     create: false
   webhook:
     create: false
-  # certController:
-  #   create: false
+  certController:
+    create: false
 
   installCRDs: false
 
