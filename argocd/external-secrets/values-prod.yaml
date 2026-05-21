@@ -13,15 +13,15 @@ external-secrets:
 
   scopedRBAC: true
   scopedNamespace: "projet-mef-sg-dsci"
-  serviceBindings:
-    enabled: false
-  rbac:
-    servicebindings:
-      create: false
-  webhook:
-    create: false
-  certController:
-    create: false
+  # serviceBindings:
+  #   enabled: false
+  # rbac:
+  #   servicebindings:
+  #     create: false
+  # webhook:
+  #   create: false
+  # certController:
+  #   create: false
 
   installCRDs: false
 
