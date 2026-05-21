@@ -12,6 +12,8 @@ external-secrets:
     flavour: ""
 
   scopedRBAC: true
+  serviceBindings:
+    enabled: false
 
   installCRDs: false
 
