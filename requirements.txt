@@ -2,5 +2,5 @@
 ansible>=2.14.0
 pyyaml>=6.0
 click==8.4.0
-pytest==9.0.3
+pytest==9.1.1
 pre-commit==4.6.0
